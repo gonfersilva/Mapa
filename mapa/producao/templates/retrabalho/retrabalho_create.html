@@ -1,0 +1,21 @@
+{% extends "layout.html "%}
+{% load producao_tags %}
+
+
+{% block title %}Retrabalho | {{ block.super }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h3>Retrabalhar</h3>
+        <div class="col-md-6">
+            {% retrabalho_form form %}
+            
+        </div>
+        <div class="col-md-6">
+            
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

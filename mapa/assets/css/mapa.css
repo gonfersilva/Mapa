@@ -1,0 +1,52 @@
+
+#content {
+    margin-top: 70px;
+}
+
+.pt {
+   padding-top: 10px; 
+}
+
+.table td.fit, .table.fit {
+    white-space: nowrap;
+    width: 1%;
+    
+}
+
+.table td.check {
+    text-align: center;
+}
+
+.table th.check {
+    text-align: center;
+}
+
+
+#estado_good {
+    background-color: green;
+    color: white;
+    text-align: center;
+    
+}
+
+#estado_rejected {
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+#estado_dm {
+    background-color: orange;
+    color: white;
+    text-align: center;
+}
+
+#estado_ba {
+    background-color: blue;
+    color: white;
+    text-align: center;
+}
+
+#estado_lab {
+    background-color: black;
+    color: white;
+    text-align: center;

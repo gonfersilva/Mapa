@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <a href="{% url 'producao:paletes'   %}" class="btn btn-primary" role="button">Voltar</a>
+        <a href="{% url 'producao:palete_create'   %}" class="btn btn-primary" role="button">Nova Palete</a>
+    </div>
+    <div class="container">
+        
+        <div class="row">
+            <h1>Palete: {{ palete.nome }}</h1>
+            {% if palete.estado == 'G' %}
+                <h3 id="estado_good">Aprovado</h3>
+            {% elif palete.estado == 'R' %}
+                <h3 id="estado_rejected">Rejeitado</h3>
+            {% elif palete.estado == 'DM' %}
+                <h3 id="estado_dm">Técnico</h3>
+            {% endif %}
+            <div class="container col-md-6">
+                <h3>Bobines: {{ palete.num_bobines_act }} / {{ palete.num_bobines }}</h3>
+                <h3>Largura: {{ palete.largura_bobines }}</h3>
+                <h3>Diâmetro: {{ palete.diametro }}</h3>
+                <h3>Core: {{ palete.core_bobines }}</h3>
+            </div>
+            <div class="container col-md-6">
+                <h2>Área: {{ palete.area }}</h2>
+                <h2>Comprimento total: {{ palete.comp_total }}</h2>
+            </div>
+        </div>
+     </div>
+            
+           
+    </br></br>
+    <div class="container">
+    <div class="row">
+            {% comment %} <div class="col-md-6 container table-responsive ml-2">
+                <h3>Bobines Disponíveis</h3>
+                
+                
+                <table class="table">
+                    <tr>
+                        <th>Bobine</th>
+                        <th>Estado</th>
+                        <th>Largura</th>
+                        <th>Diâmetro</th>
+                        <th>Core</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    {% for bob in bobine %}
+                        {% if bob.palete.pk == None and bob.estado == palete.estado and bob.bobinagem.diam == palete.diametro and bob.bobinagem.perfil.core == palete.core_bobines and bob.largura.largura == palete.largura_bobines %}
+                        <tr>
+                            <td><a href="{% url 'producao:bobineupdate' bob.pk %}">{{ bob.nome }}</a></td>
+                            <td>{{ bob.estado }}</td>
+                            <td>{{ bob.largura.largura }}</td>
+                            <td>{{ bob.bobinagem.diam }}</td>
+                            <td>{{ bob.bobinagem.perfil.core }}</td>
+                            
+                            <td><a href="{% url 'producao:paletebobine' operation='add' pk_bobine=bob.pk pk_palete=palete.pk %}"><button type="button" class="btn btn-success" >Add</button></a></td>
+                        </tr>
+                            {% endif %}
+                        {% endfor %}
+                </table>
+            </div> {% endcomment %}
+            <div class="col container table-responsive ml-2">
+                    
+                    <form method="POST" action="{% url 'producao:picagem' pk=palete.pk %}" >{% csrf_token %}
+                        <input id="myInput" type="text" name="q" placeholder="Bobine" autofocus/>
+                        <input id="myBtn" type="submit" class="btn btn-success"/>
+                    </form>
+                    {% if palete.num_bobines_act == palete.num_bobines %}
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="alert-success">Palete completa!<a href="{% url 'producao:paletes' %}"><button type="button" class="btn btn-success pull-right">Fechar palete</button></a></h1>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    {% endif %}
+
+                    <table class="table table-responsive">
+                            <tr>
+                                <th>Bobine nº</th>
+                                <th>Bobine</th>
+                                <th>Estado</th>
+                                <th>Largura</th>
+                                <th>Diâmetro</th>
+                                <th>Core</th>
+                                <th>Área</th>
+                                <th></th>
+                            </tr>
+                            {% for bob in bobine %}
+                                {% if bob.palete.pk == palete.pk  %}
+                                
+                                <tr>
+                                    <td>{{ bob.posicao_palete }}</td>
+                                    <td><a href="{% url 'producao:bobineupdate' bob.pk %}">{{ bob.nome }} </a></td>
+                                    <td>{{ bob.estado }}</td>
+                                    
+                                    <td>{{ bob.largura.largura }}</td>
+                                    
+                                    <td>{{ bob.bobinagem.diam }}</td>
+                                    
+                                    
+                                    <td>{{ bob.bobinagem.perfil.core }}</td>
+                                    <td>{{ bob.area }}</td>
+                                    
+                                    <td><a href="{% url 'producao:paletebobine' operation='remove' pk_bobine=bob.pk pk_palete=palete.pk %}"><button type="button" class="btn btn-danger">Remove</button></a></td>
+                                   
+                                          
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                                
+                            
+                        </table>
+                </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    var input = document.getElementById("myInput");
+    input.addEventListener("keyup", function(event){
+        event.preventDefault();
+        if(event.keyCode === 13){
+            document.getElementById("myBtn").click();
+        }
+    });
+</script>
+
+{% endblock %}

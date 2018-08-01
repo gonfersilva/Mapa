@@ -1,0 +1,81 @@
+{% extends "layout.html "%}
+
+
+{% block title %}Retrabalho | {{ block.super }}{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'home' %}" class="btn btn-primary" role="button">Voltar</a>
+    <a href="{% url 'producao:retrabalho_create' %}"  class="btn btn-primary pull-right" role="button">Criar bobinagem retrabalhada</a>
+</div>
+<div class="container table-responsive">
+    
+
+                <table class="table fit">
+                        <tr>
+                            <th>Bobinagem</th>
+                            <th></th>
+                            <th>Retrabalhada</th>
+                            <th>Estado</th>
+                            <th>Data</th>
+                            <th>Inicio</th>
+                            <th>Fim</th>
+                            <th>Duração</th>
+                            <th>Core (")</th>
+                            <th>Comprimento (m)</th>
+                            <th>Diâmetro (mm)</th>
+                            <th>Área (m2)</th>
+                            <th>Gramagem (gsm)</th>
+                            <th>Espessura (microns)</th>
+                            <th>Mensidade MP (g/cm3)</th>
+                            <th>Velocidade (m/min)</th>
+                            <th>Produção (kg/h)</th>
+                            
+                            
+
+                           
+                            
+                            
+                        </tr>
+                        {% for obj in object_list %}
+                            {% if obj.perfil.retrabalho == True %}
+                            <tr>
+                                <td><a href='{{ obj.get_absolute_url }}'>{{ obj.nome }}</a></td>
+                                <td><a type="submit" href="{% url 'producao:retrabalho_emendas' obj.pk %}">Retrabalhar</a></td>
+                                {% if obj.perfil.retrabalho == True %}
+                                    <td>Sim</td>
+                                {% else %}
+                                    <td>Não</td>
+                                {% endif%}
+                                {% if obj.estado == "G" %}
+                                    <td id="estado_good">{{ obj.estado }}</td>
+                                {% elif obj.estado == "DM"%}
+                                    <td id="estado_dm">{{ obj.estado }}</td>
+                                {% else %}
+                                    <td id="estado_rejected">{{ obj.estado }}</td>
+                                {% endif %}
+                                <td>{{ obj.data|date:"d-n-Y" }}</td>
+                                <td>{{ obj.inico|date:"G:i" }}</td>
+                                <td>{{ obj.fim|date:"G:i" }}</td>
+                                <td>{{ obj.duracao }}</td>
+                                <td>{{ obj.perfil.core }}</td>
+                                <td>{{ obj.comp }}</td>
+                                <td>{{ obj.diam }}</td>
+                                <td>{{ obj.area }}</td>
+                                <td>{{ obj.perfil.gramagem }}</td>
+                                <td>{{ obj.perfil.espessura }}</td>
+                                <td>{{ obj.perfil.densidade_mp }}</td>
+                                <td>{{ obj.perfil.velocidade }}</td>
+                                <td>{{ obj.perfil.producao }}</td> 
+                                
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+       
+        
+
+    
+    
+</div>
+
+{% endblock %}

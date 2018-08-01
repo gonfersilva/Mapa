@@ -1,0 +1,46 @@
+{% extends "layout.html "%}
+{% load producao_tags %}
+{% block title %}Bobine | {{ block.super }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <a href="{% url 'producao:bobinestatus'  pk=object.bobinagem.pk %}" class="btn btn-primary" role="button">Voltar</a>
+    </div>
+    <div class="container">
+    <h1>Bobine: {{ object.nome }}</h1>
+    <form method="POST">
+       {% csrf_token %} 
+        <div class="row">
+            <div class="container">
+                <h3>Estado: {{ form.estado }}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 container">
+                <h3>Cónico: {{ form.con }}</h3>
+                <h3>Descentrado: {{ form.descen }}</h3>
+                <h3>Presa: {{ form.presa }}</h3>
+                <h3>Estrela: {{ form.estrela }}</h3>
+            </div>
+            <div class="col-md-6 container">
+                <h3>Furos: {{ form.furos }}</h3>
+                <h3>Espessura: {{ form.esp }}</h3>
+                <h3>Troca NW: {{ form.troca_nw }}</h3>
+                <h3>Outros: {{ form.outros }}</h3>
+            </div>
+        </div>
+        <div class="row">
+           <div class="container">
+                <h3>Observações:</h3>
+                <h3>{{ form.obs }}</h3>
+           </div>
+        </div>
+       
+       <input type="submit" class="btn btn-primary">
+    </form>
+</div>
+</div>
+
+{% endblock %}

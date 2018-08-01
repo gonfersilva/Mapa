@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block head_title %}Bobinagem{% endblock head_title %}
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Voltar</a>
+    </div>
+<div class="container">
+    <h1>Bobinagem: {{ bobinagem.nome }}</h1>
+    {% if bobinagem.estado == 'G' %}
+        <h2 id="estado_good">{{ bobinagem.estado }}</h2>
+    {% elif bobinagem.estado == 'DM' %}
+        <h2 id="estado_dm">{{ bobinagem.estado }}</h2>
+    {% elif bobinagem.estado == 'R' %}
+        <h2 id="estado_rejected">{{ bobinagem.estado }}</h2>
+    {% elif  obj.estado == "BA"%}
+        <h2 id="estado_ba">{{ bobinagem.estado }}</h2>
+    {% else %}
+        <h2 id="estado_lab">{{ bobinagem.estado }}</h2>
+    {% endif %}
+    
+      <table class="table table-fixed">
+          <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Largura</th>
+                <th>Área</th>
+                <th class="check">Estado</th>
+                <th class="check">Cónico</th>
+                <th class="check">Descentrado</th>
+                <th class="check">Presa</th>
+                <th class="check">Estrela</th>
+                <th class="check">Furos</th>
+                <th class="check">Espessura</th>
+                <th class="check">Troca</th>
+                <th class="check">Outros</th>
+                <th>Observações</th>
+            </tr>
+        </thead>
+            {% for item in bobine %}
+            <tbody>    
+            <tr>
+                <td><a href="{% url 'producao:bobineupdate' item.pk %}">{{ item.nome }}</a></td>
+                <td>{{ item.largura.largura }}</td>
+                <td>{{ item.area }}</td>
+                {% if item.estado == "G" %}
+                    <td id="estado_good">{{ item.estado }}</td>
+                {% elif item.estado == "DM"%}
+                    <td id="estado_dm">{{ item.estado }}</td>
+                {% elif item.estado == "R" %}
+                    <td id="estado_rejected">{{ item.estado }}</td>
+                {% elif item.estado == "LAB" %}
+                    <td id="estado_lab">{{ item.estado }}</td>
+                {% else %}
+                    <td id="estado_ba">{{ item.estado }}</td>
+                {% endif %}
+                {% if not item.con %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.descen %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.presa %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.estrela %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.furos %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.esp %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.troca_nw %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.outros %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+          
+                <td>{{ item.obs }}</td>
+                          
+            </tr>
+        </tbody>  
+            {% endfor %}
+        </table>
+             
+
+        {% if bobinagem.obs == "" %}
+        <p></p>
+        {% else %}
+        <div class="container">
+            <h3>Observações:</h3>
+            <p>{{ bobinagem.obs }}</p>
+            
+            
+        </div>
+        {% endif %}
+        {% if bobinagem.num_emendas > 0 %}
+        <div class="container">
+                <h3>Emendas</h3>
+                {% if emenda.bobinagem != "" %}
+                    <table class="table">
+                        <tr>
+                            <th>Emenda nº</th>
+                            <th>Metros</th>
+                            <th>Bobine original</th>
+                            <th>Metros gastos</th>
+                        </tr>
+                        {% for em in emenda %}
+                        <tr>
+                            <td>{{ em.num_emenda }}</td>
+                            <td>{{ em.emenda }}</td>
+                            <td>{{ em.bobine }}</td>
+                            <td>{{ em.metros }}</td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+                
+        
+            </div>
+        {% else %}
+        <div class="container">
+            
+            <p></p>
+            
+            
+        </div>
+        {% endif %}
+
+
+        </div>
+        
+    </div>
+</div>
+
+
+{% endblock %}

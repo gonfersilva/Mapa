@@ -1,0 +1,36 @@
+{% extends "layout.html "%}
+{% load producao_tags %}
+
+
+{% block title %}Emendas | {{ block.super }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Bobinagem: {{ bobinagem.nome }}</h3>
+    <div class="container">
+
+        <h3>DM12</h3>
+        <a href="{% url 'producao:emenda' pk=bobinagem.pk %}"  class="btn btn-primary" role="button">Nova emenda</a>
+        {% if emenda.bobinagem != "" %}
+            <table class="table">
+                <tr>
+                    <th>Bobines utilizadas</th>
+                    <th>Nº Emenda</th>
+                    <th>Emenda (m)</th>
+                    <th>Metros consumidos</th>
+                </tr>
+                {% for em in emenda %}
+                <tr>
+                    <td>{{ em.bobine }}</td>
+                    <td>{{ em.num_emenda }}</td>
+                    <td>{{ em.emenda }}</td>
+                    <td>{{ em.metros }}</td>
+                    <!-- <td><a type="submit" href="{% url 'producao:emenda' em.pk %}">Alterar</a></td> -->
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+
+    </div>
+</div>
+{% endblock %}

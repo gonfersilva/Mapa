@@ -1,0 +1,15 @@
+{% load bootstrap3 %}
+
+<form method="POST" action="{% url 'producao:bobinagem_create' %}">
+    {% bootstrap_form form %}
+    {% csrf_token %}
+    <button onclick="goBack()" class="btn btn-primary">Voltar</button>
+    <input type="submit" class="btn btn-primary" value="Gravar">
+    
+</form>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

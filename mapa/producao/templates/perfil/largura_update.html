@@ -1,0 +1,19 @@
+{% extends "layout.html "%}
+{% load producao_tags %}
+
+
+
+{% block title %}Perfil | {{ block.super }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>{{ object.perfil }}</h2>
+    <h3>Bobine nº {{ object.num_bobine }}</h3>
+    <form method="POST">
+       {% csrf_token %} 
+       {{ form }} 
+       <input type="submit" class="btn btn-primary">
+    </form>
+    <a href="{% url 'producao:perfil_details' pk=largura.perfil.pk %}" class="btn btn-primary" role="button">Voltar</a>
+</div>
+
+{% endblock %}
