@@ -1,4 +1,5 @@
-local.py
+# local.py
+# production.py
 *.pyc
 __pycache__
 db.sqlite3
