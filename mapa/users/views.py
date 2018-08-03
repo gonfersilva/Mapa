@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import generic
 from . import forms
-from braces.views import SelectRelatedMixin
 from django.contrib.auth.models import User
 
 
