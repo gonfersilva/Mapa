@@ -38,15 +38,16 @@
           {% else %}
           
           <li class="dropdown">
+            {% if user.is_staff %}
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Planeamento
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href='{% url 'producao:perfil' %}'>Perfis</a>
-                
-                          
+              
                 
             </div>
+            {% endif %}
             
           </li>
           <li class="dropdown">
@@ -56,7 +57,7 @@
             <div class="dropdown-menu">
                 <a class="dropdown-item" href='{% url 'producao:bobinagens' %}'>Bobinagens</a></br>
                 <a class="dropdown-item" href='{% url 'producao:paletes' %}'>Paletes</a></br>  
-                <a class="dropdown-item" href='{% url 'producao:retrabalho' %}'>DM</a>                          
+                <!-- <a class="dropdown-item" href='{% url 'producao:retrabalho' %}'>DM</a>                           -->
                 
             </div>
             

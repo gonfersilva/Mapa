@@ -23,12 +23,12 @@
                             <th>Comprimento (m)</th>
                             <th>Diâmetro (mm)</th>
                             <th>Área (m2)</th>
-                            <th>Gramagem (gsm)</th>
+                            <!-- <th>Gramagem (gsm)</th>
                             <th>Espessura (microns)</th>
                             <th>Mensidade MP (g/cm3)</th>
                             <th>Velocidade (m/min)</th>
                             <th>Produção (kg/h)</th>
-                            <th></th>
+                            <th></th> -->
                             
 
                            
@@ -63,12 +63,16 @@
                             <td>{{ obj.comp }}</td>
                             <td>{{ obj.diam }}</td>
                             <td>{{ obj.area }}</td>
-                            <td>{{ obj.perfil.gramagem }}</td>
+                            <!-- <td>{{ obj.perfil.gramagem }}</td>
                             <td>{{ obj.perfil.espessura }}</td>
                             <td>{{ obj.perfil.densidade_mp }}</td>
                             <td>{{ obj.perfil.velocidade }}</td>
-                            <td>{{ obj.perfil.producao }}</td>               
-                            <td><a href="{% url 'producao:bobinagem_delete' pk=obj.pk %}" class="btn btn-primary">Apagar</a></td>           
+                            <td>{{ obj.perfil.producao }}</td>                -->
+                            {% if user.is_staff %}
+                            <td><a href="{% url 'producao:bobinagem_delete' pk=obj.pk %}" class="btn btn-primary">Apagar</a></td>     
+                            {% else %}
+                            <td></td>   
+                            {% endif %}  
                         </tr>
                         {% endif %}
                         {% endfor %}

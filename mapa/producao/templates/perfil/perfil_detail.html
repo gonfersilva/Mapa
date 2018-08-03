@@ -14,11 +14,11 @@
        <p>Nº de Bobines:{{ perfil.num_bobines }}</p>
        <p>Largura: {{ perfil.largura_bobinagem }}</p>
        <p>Diâmetro: {{ perfil.core }}</p>
-       <p>Core: {{ perfil.gramagem }}</p>
+       <!-- <p>Core: {{ perfil.gramagem }}</p>
        <p>Espessura: {{ perfil.espessura }}</p>
        <p>Densidade MP: {{ perfil.densidade_mp }}</p>
        <p>Velocidade: {{ perfil.velocidade }}</p>
-       <p>Produção: {{ perfil.producao }}</p>
+       <p>Produção: {{ perfil.producao }}</p> -->
 
           
     </div>
@@ -34,7 +34,11 @@
                     </tr>
                     <tr>
                         {% for lar in largura %}
+                            {% if not lar.largura == None%}
                             <td>{{ lar.largura }}</td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
                         {% endfor%}
                     </tr>
                     <tr>

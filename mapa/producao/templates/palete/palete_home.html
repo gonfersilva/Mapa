@@ -22,6 +22,7 @@
                             <th>Diâmetro (mm)</th>
                             <th>Área (m2)</th>
                             <th>Comprimento total (m)</th>
+                            <th></th>
                            
                            
                             
@@ -47,8 +48,11 @@
                                 <td>{{ obj.diametro }}</td>
                                 <td>{{ obj.area }}</td>
                                 <td>{{ obj.comp_total }}</td>
+                                {% if user.is_staff %}
                                 <td><a href="{% url 'producao:palete_delete' pk=obj.pk %}" class="btn btn-primary">Apagar</a></td>
-                                            
+                                {% else %}
+                                <td></td>
+                                {% endif %}
                             </tr>
                             {% endif %}
                         {% endfor %}

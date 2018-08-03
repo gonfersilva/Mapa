@@ -19,11 +19,11 @@ class Perfil(models.Model):
     num_bobines = models.PositiveIntegerField(verbose_name="Número de bobines")
     largura_bobinagem = models.DecimalField(verbose_name="Largura da bobinagem", max_digits=10, decimal_places=2)
     core = models.CharField(verbose_name="Core", max_length=1, choices=CORE)
-    gramagem = models.DecimalField(verbose_name="Gramagem", max_digits=10, decimal_places=2)
-    espessura = models.DecimalField(verbose_name="Espessura", max_digits=10, decimal_places=2)
-    densidade_mp = models.DecimalField(verbose_name="Densidade da matéria prima", max_digits=10, decimal_places=2)
-    velocidade = models.DecimalField(verbose_name="Velocidade", max_digits=10, decimal_places=2)
-    producao = models.DecimalField(verbose_name="Produção", max_digits=10, decimal_places=2)
+    gramagem = models.DecimalField(verbose_name="Gramagem", max_digits=10, decimal_places=2, null=True, blank=True)
+    espessura = models.DecimalField(verbose_name="Espessura", max_digits=10, decimal_places=2, null=True, blank=True)
+    densidade_mp = models.DecimalField(verbose_name="Densidade da matéria prima", max_digits=10, decimal_places=2, null=True, blank=True)
+    velocidade = models.DecimalField(verbose_name="Velocidade", max_digits=10, decimal_places=2, null=True, blank=True)
+    producao = models.DecimalField(verbose_name="Produção", max_digits=10, decimal_places=2, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Perfis"
@@ -115,7 +115,7 @@ class Palete(models.Model):
     data_pal        = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today)
     nome            = models.CharField(max_length=200, unique=True, null=True, blank=True, verbose_name="Palete")
     num             = models.IntegerField(unique=True, null=True, blank=True, verbose_name="Palete nº")
-    estado          = models.CharField(max_length=2, choices=STATUSP, default='R', verbose_name="Estado")
+    estado          = models.CharField(max_length=2, choices=STATUSP, default='G', verbose_name="Estado")
     area            = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área palete")
     comp_total      = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento palete")
     lote            = models.CharField(max_length=200, unique=True, null=True, blank=True, verbose_name="Nº Lote")

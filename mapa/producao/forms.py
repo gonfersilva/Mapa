@@ -6,7 +6,8 @@ class PerfilCreateForm(ModelForm):
     
     class Meta:
        model = Perfil
-       fields =['nome', 'num_bobines', 'retrabalho', 'largura_bobinagem', 'core', 'gramagem', 'espessura', 'densidade_mp', 'velocidade', 'producao']
+       fields =['nome', 'num_bobines', 'largura_bobinagem', 'core', 'retrabalho']
+    #    fields =['nome', 'num_bobines', 'retrabalho', 'largura_bobinagem', 'core', 'gramagem', 'espessura', 'densidade_mp', 'velocidade', 'producao']
 
 
 class LarguraForm(ModelForm):
