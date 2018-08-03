@@ -14,10 +14,11 @@
             <table class="table">
                 <tr>
                     <td>Nome</td>
+                    <td>Produto</td>
                     <td>Nº de Bobines</td>
-                    <td>Retrabalho</td>
                     <td>Largura total</td>
                     <td>Core</td>
+                    <td>Retrabalho</td>
                     <td></td>
                     <!-- <td>Gramagem</td>
                     <td>Espessura</td>
@@ -28,12 +29,9 @@
                 {% for obj in object_list %}
                 <tr>
                     <td><a href='{{ obj.get_absolute_url }}'>{{ obj.nome }}</a></td>
+                    <td>{{ obj.produto }}</td>
                     <td>{{ obj.num_bobines }}</td>
-                    {% if obj.retrabalho == True %}
-                    <td class="check"><span style="color:green"><i class="glyphicon glyphicon-ok"></i></span></td>
-                    {% else %}
-                    <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
-                    {% endif %}
+                     
                     <td>{{ obj.largura_bobinagem }}</td>
                     <td>{{ obj.core }}</td>
                     <!-- <td>{{ obj.gramagem }}</td>
@@ -41,6 +39,11 @@
                     <td>{{ obj.densidade_mp }}</td>
                     <td>{{ obj.velocidade }}</td>
                     <td>{{ obj.producao }}</td> -->
+                    {% if obj.retrabalho == True %}
+                    <td class="check"><span style="color:green"><i class="glyphicon glyphicon-ok"></i></span></td>
+                    {% else %}
+                    <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                    {% endif %}
                     <td><a href="{% url 'producao:perfil_delete' pk=obj.pk %}" class="btn btn-primary">Apagar</a></td>
                 </tr>
                 {% endfor %}

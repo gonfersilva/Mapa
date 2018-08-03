@@ -121,7 +121,7 @@ def add_bobine_palete(request, pk):
     template_name='palete/add_bobine_palete.html'
     palete = Palete.objects.get(pk=pk)
     bobinagem = Bobinagem.objects.filter(diam=palete.diametro)
-    bobine = Bobine.objects.all()
+    bobine = Bobine.objects.all().order_by('posicao_palete')
     
     
     context = {"palete": palete, 

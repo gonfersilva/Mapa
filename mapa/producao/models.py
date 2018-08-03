@@ -166,6 +166,7 @@ class Bobine(models.Model):
     
     class Meta:
         verbose_name_plural = "Bobines"
+        
     
     def get_absolute_url(self):
         return f"/producao/bobinagem/{self.bobinagem.id}"
