@@ -15,7 +15,7 @@ class Perfil(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="Username")
     timestamp = models.DateTimeField(auto_now_add=True)
     nome = models.CharField(verbose_name="Perfil", max_length=200, unique=True, null=True, blank=True )
-    produto = models.CharField(verbose_name="Produto", max_length=200, unique=True, null=True, blank=True )
+    produto = models.CharField(verbose_name="Produto", max_length=200, null=True, blank=True )
     retrabalho = models.BooleanField(default=False, verbose_name="Retrabalho")
     num_bobines = models.PositiveIntegerField(verbose_name="Número de bobines")
     largura_bobinagem = models.DecimalField(verbose_name="Largura da bobinagem", max_digits=10, decimal_places=2)
