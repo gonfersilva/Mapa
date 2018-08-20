@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="container">
+        <a href="{% url 'report:report' %}" class="btn btn-primary" role="button">Voltar</a>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                {% if report.estado == "Aberto" %}
+                    <h3 id="estado_rejected">{{ report.estado }}</h3>
+                {% elif report.estado == "Em análise"%}
+                    <h3 id="estado_dm">{{ report.estado }}</h3>
+                {% else %}
+                    <h3 id="estado_good">{{ report.estado }}</h3>
+                {% endif %}
+                
+            </div>
+            
+        </div>
+        <div class="row">
+                <div class="col-md-12">
+                        <h3>{{ report.assunto }}</h3>
+                        <p> {{ report.descricao }}</p>
+                        {% if report.anexo == '' %}
+                        <h1></h1>
+                        {% else %}
+                        <img src='{{ report.anexo.url }}' class="img-responsive">
+                        {% endif %}
+                </div>
+                
+            </div>
+            
+        
+          
+    </div>
+    
+            
+       
+    
+
+    
+</div>
+{% endblock %}

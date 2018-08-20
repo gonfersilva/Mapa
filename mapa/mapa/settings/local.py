@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'users',
-    'producao'
+    'producao',
+    'report',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
 
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'home'
+
+#Media
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.join(BASE_DIR, 'assets/img'))

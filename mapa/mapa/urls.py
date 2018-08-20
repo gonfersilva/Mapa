@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url, include
+from django.conf.urls.static import static
+from .settings import local
 from django.views.generic import TemplateView
 from users import urls as users_urls
 
@@ -22,5 +24,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/', include(users_urls)),
     url(r'^producao/', include('producao.urls', namespace='producao')),
+    url(r'^report/', include('report.urls', namespace='report')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
 ]
+
+if local.DEBUG:
+    urlpatterns += static(local.MEDIA_URL, document_root=local.MEDIA_ROOT)

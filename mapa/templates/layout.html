@@ -63,10 +63,12 @@
             
           </li>
           
-          
+          <li><a href="{% url 'report:report' %}">Report</a></li>
           <li><a href="#">{{ user.first_name }} {{ user.last_name }}</a></li>
+          
           <li><a href="{% url 'users:logout' %}">Logout</a></li>
           {% endif %}
+          
         </ul>
           
       </div>
