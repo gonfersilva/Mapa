@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from . import views
-from .views import RetrabalhoCreateView, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, create_emenda, bobinagem_emendas, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, BobinagemRetrabalhoListView
+from .views import RetrabalhoCreateView, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, create_emenda, bobinagem_emendas, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, BobinagemRetrabalhoListView, status_bobinagem
 
 app_name="producao" 
 
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^bobinagem/create/$', BobinagemCreateView.as_view(), name='bobinagem_create'),
     url(r'^bobinagem/(?P<pk>\d+)/', bobinagem_status, name='bobinestatus'),
     url(r'^bobinagem/delete/(?P<pk>\d+)/', bobinagem_delete, name='bobinagem_delete'),
+    url(r'^bobinagem/(?P<operation>.+)/(?P<pk>\d+)/', status_bobinagem, name='bobinagem_status'),
     url(r'^bobine/(?P<pk>\d+)/', BobineUpdate.as_view(), name='bobineupdate'),
     url(r'^palete/$', PaleteListView.as_view(), name='paletes'),
     url(r'^palete/create/$', PaleteCreateView.as_view(), name='palete_create'),

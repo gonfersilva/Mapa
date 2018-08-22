@@ -289,3 +289,41 @@ def palete_delete(request, pk):
     }
     return render(request, "palete/palete_delete.html", context)
     
+@login_required
+def status_bobinagem(request, operation, pk):
+    bobinagem = Bobinagem.objects.get(pk=pk)
+    if operation == 'ap':
+        bobinagem.estado = 'G'
+        bobinagem.save()
+        num = 1
+        for i in range(bobinagem.perfil.num_bobines):
+            largura = Largura.objects.get(perfil=bobinagem.perfil, num_bobine=num)
+            bobine = Bobine.objects.get(bobinagem=bobinagem, largura=largura)
+            if bobine.estado == 'LAB':
+                bobine.estado = 'G'
+                bobine.save()
+            num += 1
+    elif operation == 'rej':
+        bobinagem.estado = 'R'
+        bobinagem.save()
+        num = 1
+        for i in range(bobinagem.perfil.num_bobines):
+            largura = Largura.objects.get(perfil=bobinagem.perfil, num_bobine=num)
+            bobine = Bobine.objects.get(bobinagem=bobinagem, largura=largura)
+            if bobine.estado == 'LAB':
+                bobine.estado = 'R'
+                bobine.save()
+            num += 1
+    elif operation == 'dm':
+        bobinagem.estado = 'DM'
+        bobinagem.save()
+        num = 1
+        for i in range(bobinagem.perfil.num_bobines):
+            largura = Largura.objects.get(perfil=bobinagem.perfil, num_bobine=num)
+            bobine = Bobine.objects.get(bobinagem=bobinagem, largura=largura)
+            if bobine.estado == 'LAB':
+                bobine.estado = 'DM'
+                bobine.save()
+            num += 1
+            
+    return redirect('producao:bobinagens')

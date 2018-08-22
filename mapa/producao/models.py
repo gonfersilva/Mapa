@@ -85,7 +85,7 @@ class Bobinagem(models.Model):
     inico = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Início")
     fim = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Fim")
     duracao = models.CharField(max_length=200, null=True, blank=True, verbose_name="Duração")
-    estado = models.CharField(max_length=3, choices=STATUSP, default='G', verbose_name="Estado")
+    estado = models.CharField(max_length=3, choices=STATUSP, default='LAB', verbose_name="Estado")
     obs = models.TextField(max_length=500, null=True, blank=True, verbose_name="Observações", default="") 
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -244,23 +244,24 @@ def create_bobine(sender, instance, **kwargs):
     num = 1
     for i in range(instance.perfil.num_bobines):
         lar = Largura.objects.get(perfil=instance.perfil, num_bobine=num)
-        
-        bob = Bobine.objects.create(bobinagem=instance, largura=lar)
-        if num < 10:
-            bob.nome = '%s-0%s' % (instance.nome, num)
-        else:
-            bob.nome = '%s-%s' % (instance.nome, num)
-        if bob.bobinagem.estado == 'R':
-            bob.estado = 'R'
-        elif bob.bobinagem.estado == 'DM':
-            bob.estado = 'DM'
-        elif bob.bobinagem.estado == 'G':
-            bob.estado = 'G'
-        elif bob.bobinagem.estado == 'BA':
-            bob.estado = 'BA'
-        else:
-            bob.estado = 'LAB'
-        bob.save() 
+        bob = Bobine.objects.filter(bobinagem=instance, largura=lar)
+        if not bob:
+            bob = Bobine.objects.create(bobinagem=instance, largura=lar)
+            if num < 10:
+                bob.nome = '%s-0%s' % (instance.nome, num)
+            else:
+                bob.nome = '%s-%s' % (instance.nome, num)
+            if bob.bobinagem.estado == 'R':
+                bob.estado = 'R'
+            elif bob.bobinagem.estado == 'DM':
+                bob.estado = 'DM'
+            elif bob.bobinagem.estado == 'G':
+                bob.estado = 'G'
+            elif bob.bobinagem.estado == 'BA':
+                bob.estado = 'BA'
+            else:
+                bob.estado = 'LAB'
+            bob.save() 
         num += 1
 
 

@@ -41,12 +41,13 @@
 }
 
 #estado_ba {
-    background-color: blue;
+    background-color: black;
     color: white;
     text-align: center;
 }
 
 #estado_lab {
-    background-color: black;
+    background-color: cyan;
     color: white;
     text-align: center;
+}
