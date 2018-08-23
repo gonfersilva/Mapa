@@ -267,6 +267,7 @@ def bobinagem_delete(request, pk):
     if request.method == "POST":
         obj.delete()
         return redirect('producao:bobinagens')
+       
             
     context = {
         "object": obj,

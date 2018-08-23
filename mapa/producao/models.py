@@ -143,7 +143,7 @@ class Palete(models.Model):
 
     class Meta:
         verbose_name_plural = "Paletes"
-        ordering = ['-timestamp']  
+        ordering = ['-nome']  
 
     
 

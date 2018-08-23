@@ -5,12 +5,17 @@
  
     <h1></h1>
     <form action="." method="POST">{% csrf_token %}
+        
         <h3>Ao apagar esta bobinagem, as seguintes bobines serão também apagadas: </h3>
         {% for bob in bobine %}
         <p>{{ bob.nome }}</p>
         {% endfor %}
         <h1>Têm a certeza que quer apagar a bobinagem {{ object.nome }}?</h1>
+        
         <p><input type="submit" class="btn btn-primary" value="Sim">  <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Cancelar</a></p>
+       
+        
+        
     </form>
     
 </div>
