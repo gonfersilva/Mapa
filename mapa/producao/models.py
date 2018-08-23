@@ -82,7 +82,7 @@ class Bobinagem(models.Model):
     data = models.DateField(auto_now_add=False, auto_now=False, default=datetime.date.today,verbose_name="Data")
     num_bobinagem = models.PositiveIntegerField(verbose_name="Bobinagem nº")
     comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Final")
-    comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Parcial", null=True, blank=True)
+    comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Emenda", null=True, blank=True)
     comp_cli = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Cliente", default=0)
     desper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Desperdício", default=0)
     diam = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Diametro")
