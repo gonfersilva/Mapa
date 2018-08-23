@@ -21,7 +21,7 @@ class BobinagemCreateForm(ModelForm):
     
     class Meta:
        model = Bobinagem
-       fields =['data', 'num_bobinagem', 'perfil', 'comp', 'diam', 'inico', 'fim', 'estado', 'obs']
+       fields =['data', 'num_bobinagem', 'perfil', 'comp', 'comp_par', 'diam', 'inico', 'fim', 'estado', 'obs']
 
     def __init__(self, *args, **kwargs):
         super(BobinagemCreateForm, self).__init__(*args, **kwargs)

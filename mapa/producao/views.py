@@ -223,7 +223,7 @@ def picagem(request, pk):
                 erro = 3
                 return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro) 
             else:
-                if bobine.estado == palete.estado and bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
+                if bobine.estado == palete.estado or bobine.estado == 'LAB' and bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
                     Bobine.add_bobine(palete.pk, bobine.pk)
                     return redirect('producao:addbobinepalete', pk=palete.pk)
                 else:

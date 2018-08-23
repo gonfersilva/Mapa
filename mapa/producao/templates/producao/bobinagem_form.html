@@ -2,6 +2,10 @@
 
 <form method="POST" action="{% url 'producao:bobinagem_create' %}">
     {% bootstrap_form form %}
+    <!-- {% bootstrap_field form.data %}
+    {% bootstrap_field form.num_bobinagem %}
+    {% bootstrap_field form.data %}
+    {% bootstrap_field form.data %} -->
     {% csrf_token %}
     <button onclick="goBack()" class="btn btn-primary">Voltar</button>
     <input type="submit" class="btn btn-primary" value="Gravar">

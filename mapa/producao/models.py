@@ -9,6 +9,8 @@ from datetime import timedelta
 from time import gmtime, strftime
 from django.db.models import Max
 from django.contrib.auth.models import User
+from decimal import *
+
 
 class Perfil(models.Model):
     CORE = (('3', '3'),('6', '6'))
@@ -79,7 +81,10 @@ class Bobinagem(models.Model):
     nome = models.CharField(verbose_name="Bobinagem", max_length=200, unique=True)
     data = models.DateField(auto_now_add=False, auto_now=False, default=datetime.date.today,verbose_name="Data")
     num_bobinagem = models.PositiveIntegerField(verbose_name="Bobinagem nº")
-    comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento")
+    comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Final")
+    comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Parcial", null=True, blank=True)
+    comp_cli = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Cliente", default=0)
+    desper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Desperdício", default=0)
     diam = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Diametro")
     area = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área")
     inico = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Início")
@@ -110,7 +115,7 @@ class Bobinagem(models.Model):
 
 class Palete(models.Model):
     CORE = (('3', '3'),('6', '6'))
-    STATUSP = (('G', 'G'), ('DM', 'T'), ('R', 'R'))
+    STATUSP = (('G', 'G'), ('DM', 'DM'), ('R', 'R'))
     user            = models.ForeignKey(User, on_delete=models.PROTECT,verbose_name="Username")
     timestamp       = models.DateTimeField(auto_now_add=True)
     data_pal        = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today)
@@ -301,7 +306,7 @@ def palete_nome(sender, instance, **kwargs):
 
 def area_bobinagem(sender, instance, **kwargs):
     largura = instance.perfil.largura_bobinagem / 1000
-    instance.area = instance.comp * largura
+    instance.area = instance.comp_cli * largura
 
 def area_bobine(sender, instance, **kwargs):
     largura = instance.largura.largura / 1000
@@ -339,9 +344,27 @@ def emenda(sender, instance, **kwrags):
             instance.emenda = x + emenda.emenda
         
    
+def desperdicio(sender, instance, **kwargs):
+    desp = instance.comp - instance.comp_par
+    x = instance.comp_par * Decimal('0.05')
+    if desp <= x:
+        instance.comp_cli = instance.comp
+    else:        
+        instance.comp_cli = instance.comp_par * Decimal('1.05')
+        instance.desper = (instance.comp - instance.comp_cli) / 1000 * instance.perfil.largura_bobinagem
+   
+          
+        
+
+
+    
+
+
+
 
 post_save.connect(perfil_larguras, sender=Perfil)
 pre_save.connect(bobinagem_nome, sender=Bobinagem)
+pre_save.connect(desperdicio, sender=Bobinagem)
 post_save.connect(create_bobine, sender=Bobinagem)
 pre_save.connect(tempo_duracao, sender=Bobinagem)
 pre_save.connect(palete_nome, sender=Palete)

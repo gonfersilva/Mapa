@@ -12,15 +12,15 @@
         <div class="row">
             <h1>Palete: {{ palete.nome }}</h1>
             {% if palete.estado == 'G' %}
-                <h3 id="estado_good">Aprovado</h3>
+                <h3 id="estado_good">Good</h3>
             {% elif palete.estado == 'R' %}
-                <h3 id="estado_rejected">Rejeitado</h3>
+                <h3 id="estado_rejected">Rejected</h3>
             {% elif palete.estado == 'DM' %}
-                <h3 id="estado_dm">Técnico</h3>
+                <h3 id="estado_dm">DM12</h3>
             {% endif %}
             <div class="container col-md-6">
                 <h3>Bobines: {{ palete.num_bobines_act }} / {{ palete.num_bobines }}</h3>
-                <h3>Largura: {{ palete.largura_bobines }}</h3>
+                <h3>Largura bobines: {{ palete.largura_bobines }}</h3>
                 <h3>Diâmetro: {{ palete.diametro }}</h3>
                 <h3>Core: {{ palete.core_bobines }}</h3>
             </div>
@@ -98,8 +98,18 @@
                                 <tr>
                                     <td>{{ bob.posicao_palete }}</td>
                                     <td><a href="{% url 'producao:bobineupdate' bob.pk %}">{{ bob.nome }} </a></td>
-                                    <td>{{ bob.estado }}</td>
-                                    
+                                    {% if bob.estado == "G" %}
+                                    <td id="estado_good">{{ bob.estado }}</td>
+                                    {% elif bob.estado == "DM"%}
+                                    <td id="estado_dm">{{ bob.estado }}</td>
+                                    {% elif bob.estado == "R" %}
+                                    <td id="estado_rejected">{{ bob.estado }}</td>
+                                    {% elif  bob.estado == "BA"%}
+                                    <td id="estado_ba">{{ bob.estado }}</td>
+                                    {% else %}
+                                        <td id="estado_lab">{{ bob.estado }}</td>
+                                    {% endif %}
+                                            
                                     <td>{{ bob.largura.largura }}</td>
                                     
                                     <td>{{ bob.bobinagem.diam }}</td>

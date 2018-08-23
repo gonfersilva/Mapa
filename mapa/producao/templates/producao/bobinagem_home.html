@@ -13,23 +13,20 @@
                 <table class="table fit">
                         <tr>
                             <th>Bobinagem</th>
-                            <!-- <th>Retrabalhada</th> -->
-                            <th>Estado</th>
+                            <!-- <th>Estado</th> -->
                             <th>Data</th>
                             <th>Inicio</th>
                             <th>Fim</th>
                             <th>Duração</th>
                             <th>Core (")</th>
-                            <th>Comprimento (m)</th>
+                            <th>Comp (m)</th>
+                            <th>Comp Emenda (m)</th>
+                            <th>Comp Cliente (m)</th>
+                            <th>Desperdicio (m2)</th>
+                            
                             <th>Diâmetro (mm)</th>
                             <th>Área (m2)</th>
-                            <!-- <th>Gramagem (gsm)</th>
-                            <th>Espessura (microns)</th>
-                            <th>Mensidade MP (g/cm3)</th>
-                            <th>Velocidade (m/min)</th>
-                            <th>Produção (kg/h)</th>
-                            <th></th> -->
-                            
+                                                 
 
                            
                             
@@ -39,12 +36,8 @@
                         {% if obj.perfil.retrabalho == False %}
                         <tr>
                             <td><a href='{{ obj.get_absolute_url }}'>{{ obj.nome }}</a></td>
-                            <!-- {% if obj.perfil.retrabalho == True %}
-                                <td class="check"><span style="color:green"><i class="glyphicon glyphicon-ok"></i></span></td>
-                            {% else %}
-                                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
-                            {% endif%} -->
-                            {% if obj.estado == "G" %}
+                            
+                            <!-- {% if obj.estado == "G" %}
                                 <td id="estado_good">{{ obj.estado }}</td>
                             {% elif obj.estado == "DM"%}
                                 <td id="estado_dm">{{ obj.estado }}</td>
@@ -54,20 +47,19 @@
                                 <td id="estado_ba">{{ obj.estado }}</td>
                             {% else %}
                                 <td id="estado_lab">{{ obj.estado }}</td>
-                            {% endif %}
+                            {% endif %} -->
                             <td>{{ obj.data|date:"d-n-Y" }}</td>
                             <td>{{ obj.inico|date:"G:i" }}</td>
                             <td>{{ obj.fim|date:"G:i" }}</td>
                             <td>{{ obj.duracao }}</td>
                             <td>{{ obj.perfil.core }}</td>
                             <td>{{ obj.comp }}</td>
+                            <td>{{ obj.comp_par }}</td>
+                            <td>{{ obj.comp_cli }}</td>
+                            <td>{{ obj.desper }}</td>
                             <td>{{ obj.diam }}</td>
                             <td>{{ obj.area }}</td>
-                            <!-- <td>{{ obj.perfil.gramagem }}</td>
-                            <td>{{ obj.perfil.espessura }}</td>
-                            <td>{{ obj.perfil.densidade_mp }}</td>
-                            <td>{{ obj.perfil.velocidade }}</td>
-                            <td>{{ obj.perfil.producao }}</td>                -->
+                           
                             {% if obj.estado == "LAB" %}
                             <td><a href="{% url 'producao:bobinagem_status' pk=obj.pk operation='ap' %}" class="btn btn-success">Aprovar</a></td>     
                             <td><a href="{% url 'producao:bobinagem_status' pk=obj.pk operation='rej' %}" class="btn btn-danger">Rejeitar</a></td>   
@@ -77,13 +69,13 @@
                             <td></td>
                             <td></td>
                             {% endif %}
-                            {% if user.is_staff %}
+                            
                               
                             
                             <td><a href="{% url 'producao:bobinagem_delete' pk=obj.pk %}" class="btn btn-primary">Apagar</a></td>     
-                            {% else %}
-                            <td></td>   
-                            {% endif %}  
+                           
+                         
+                             
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -94,5 +86,10 @@
     
     
 </div>
+
+
+
+
+
 
 {% endblock %}
