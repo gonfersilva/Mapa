@@ -1,6 +1,6 @@
 {% load bootstrap3 %}
 
-<form method="POST" action="{% url 'producao:bobinagem_create' %}">
+<form method="POST" action="{% url 'producao:bobinagem_create' %}" onkeypress="return event.keyCode != 13;">
     {% bootstrap_form form %}
     <!-- {% bootstrap_field form.data %}
     {% bootstrap_field form.num_bobinagem %}
@@ -16,4 +16,7 @@
     function goBack() {
         window.history.back();
     }
+
+   
+
 </script>

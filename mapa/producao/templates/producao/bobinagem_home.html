@@ -1,8 +1,10 @@
 {% extends "layout.html "%}
 
 
+
 {% block title %}Bobinagens | {{ block.super }}{% endblock %}
 {% block content %}
+
 <div class="container">
     <a href="{% url 'home' %}" class="btn btn-primary" role="button">Voltar</a>
     <a href="{% url 'producao:bobinagem_create' %}"  class="btn btn-primary pull-right" role="button">Criar bobinagem</a>
@@ -10,7 +12,7 @@
 <div class="container table-responsive">
     
 
-                <table class="table fit">
+                <table id="fixed_hdr2" class="table fit">
                         <tr>
                             <th>Bobinagem</th>
                             <!-- <th>Estado</th> -->
@@ -19,6 +21,10 @@
                             <th>Fim</th>
                             <th>Duração</th>
                             <th>Core (")</th>
+                            <th>Lote Nonwoven Sup</th>
+                            <th>Lote Nonwoven Inf</th>
+                            <th>Nw Sup (m)</th>
+                            <th>Nw Inf (m)</th>
                             <th>Comp (m)</th>
                             <th>Comp Emenda (m)</th>
                             <th>Comp Cliente (m)</th>
@@ -53,6 +59,10 @@
                             <td>{{ obj.fim|date:"G:i" }}</td>
                             <td>{{ obj.duracao }}</td>
                             <td>{{ obj.perfil.core }}</td>
+                            <td>{{ obj.lotenwsup }}</td>
+                            <td>{{ obj.lotenwinf }}</td>
+                            <td>{{ obj.nwsup}}</td>
+                            <td>{{ obj.nwinf }}</td>
                             <td>{{ obj.comp }}</td>
                             <td>{{ obj.comp_par }}</td>
                             <td>{{ obj.comp_cli }}</td>
