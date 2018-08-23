@@ -104,7 +104,7 @@ class Bobinagem(models.Model):
     
     class Meta:
         verbose_name_plural = "Bobinagens"
-        ordering = ['-timestamp']
+        ordering = ['-nome']
 
     def get_absolute_url(self):
         return f"/producao/bobinagem/{self.id}"
