@@ -5,7 +5,7 @@ from django import forms
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse, HttpResponse
 from django.views.generic import CreateView
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, View, FormView, UpdateView
-from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm, EmendasCreateForm, RetrabalhoCreateForm
+from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm
 from .models import Largura, Perfil, Bobinagem, Bobine, Palete, Emenda
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -145,63 +145,63 @@ def palete_change(request, operation, pk_bobine, pk_palete):
     
     return redirect('producao:addbobinepalete', pk=palete.pk)
 
-class BobinagemRetrabalhoListView(LoginRequiredMixin, ListView):
+# class BobinagemRetrabalhoListView(LoginRequiredMixin, ListView):
     
-    queryset = Bobinagem.objects.all()
-    template_name = 'retrabalho/retrabalho_home.html'
+#     queryset = Bobinagem.objects.all()
+#     template_name = 'retrabalho/retrabalho_home.html'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['now'] = timezone.now()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['now'] = timezone.now()
+#         return context
 
-class RetrabalhoCreateView(LoginRequiredMixin, CreateView):
-    form_class = RetrabalhoCreateForm
-    template_name = 'retrabalho/retrabalho_create.html'
-    success_url = "/producao/retrabalho/{id}"
+# class RetrabalhoCreateView(LoginRequiredMixin, CreateView):
+#     form_class = RetrabalhoCreateForm
+#     template_name = 'retrabalho/retrabalho_create.html'
+#     success_url = "/producao/retrabalho/{id}"
     
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         return super().form_valid(form)
 
   
 
     
-@login_required
-def bobinagem_emendas(request, pk):
-    template_name = 'retrabalho/retrabalho_emendas.html'
-    bobinagem = Bobinagem.objects.get(pk=pk)
-    emenda = Emenda.objects.filter(bobinagem=pk)
+# @login_required
+# def bobinagem_emendas(request, pk):
+#     template_name = 'retrabalho/retrabalho_emendas.html'
+#     bobinagem = Bobinagem.objects.get(pk=pk)
+#     emenda = Emenda.objects.filter(bobinagem=pk)
 
         
-    context = {
-        "bobinagem": bobinagem,
-        "emenda": emenda
-    }
+#     context = {
+#         "bobinagem": bobinagem,
+#         "emenda": emenda
+#     }
 
-    return render(request, template_name, context) 
+#     return render(request, template_name, context) 
 
-@login_required
-def create_emenda(request, pk):
-    template_name = 'retrabalho/emenda_create.html'
-    form = EmendasCreateForm()
-    bobinagem = Bobinagem.objects.get(pk=pk)
+# @login_required
+# def create_emenda(request, pk):
+#     template_name = 'retrabalho/emenda_create.html'
+#     form = EmendasCreateForm()
+#     bobinagem = Bobinagem.objects.get(pk=pk)
     
-    if request.method == "POST":
-        form = EmendasCreateForm(request.POST)
+#     if request.method == "POST":
+#         form = EmendasCreateForm(request.POST)
         
-        if form.is_valid():
-            Emenda.objects.create(**form.cleaned_data, bobinagem=bobinagem)
-            return  redirect('producao:retrabalho_emendas', pk=bobinagem.pk)
-        else:
-            print(form.error)
+#         if form.is_valid():
+#             Emenda.objects.create(**form.cleaned_data, bobinagem=bobinagem)
+#             return  redirect('producao:retrabalho_emendas', pk=bobinagem.pk)
+#         else:
+#             print(form.error)
 
     
-    context = {
-        'form': form,
-        'bobinagem': bobinagem,
-    }
-    return render(request, template_name, context)
+#     context = {
+#         'form': form,
+#         'bobinagem': bobinagem,
+#     }
+#     return render(request, template_name, context)
 
 
 @login_required
@@ -238,33 +238,7 @@ def picagem(request, pk):
          return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)          
             
 
-    # if bob_filter.exists():
-    #     bobine = Bobine.objects.get(nome=bob)
-    #     if bobine.palete:
-    #         if bobine.palete == palete:
-    #             erro = 4
-    #             return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-    #         else:
-    #             erro = 5
-    #             return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-    #     else:
-    #         if palete.estado == 'DM':
-    #             Bobine.add_bobine(palete.pk, bobine.pk)
-    #             return redirect('producao:addbobinepalete', pk=palete.pk)
-    #         elif palete.estado == "G":
-    #             if palete.num_bobines_act == palete.num_bobines:
-    #                 erro = 3
-    #                 return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-    #             else:
-    #                 if bobine.estado == palete.estado or bobine.estado == 'LAB' and bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
-    #                     Bobine.add_bobine(palete.pk, bobine.pk)
-    #                     return redirect('producao:addbobinepalete', pk=palete.pk)
-    #                 else:
-    #                     erro = 1
-    #                     return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-    # else:
-    #     erro = 2
-    #     return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+    
    
 @login_required
 def add_bobine_palete_erro(request, pk, e):

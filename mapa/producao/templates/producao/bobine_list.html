@@ -9,7 +9,7 @@
     </div>
 <div class="container">
     <div class="row">
-            <h2>Detalhes:{{ bobinagem.nome }}</h2>
+            <h2>Detalhes: {{ bobinagem.nome }}</h2>
             <br/>
             
             <div class="container col-md-6">
@@ -26,10 +26,7 @@
                        <th>Data:</th>
                        <td>{{ bobinagem.data|date:"d-n-Y" }}</td>
                     </tr>
-                    <tr>
-                        <th>Emendas:</th>
-                        <td>{{ bobinagem.num_emendas }}</td>
-                    </tr>
+                   
                     <tr>
                         <th>Comprimento (m):</th>
                         <td>{{ bobinagem.comp }}</td>
@@ -43,6 +40,10 @@
                         <td>{{ bobinagem.area }}</td>
                     </tr>
                     <tr>
+                            <th>Desperdício:</th>
+                            <td>{{ bobinagem.desper }}</td>
+                        </tr>
+                    <tr>
                         <th>Ínicio:</th>
                         <td>{{ bobinagem.inico|date:"G:i" }}</td>
                     </tr>
@@ -54,6 +55,7 @@
                         <th>Duração:</th>
                         <td>{{ bobinagem.duracao }}</td>
                     </tr>
+                    
                          
                     
                 </table>

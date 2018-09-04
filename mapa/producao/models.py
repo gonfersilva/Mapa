@@ -371,19 +371,19 @@ def comp_bobine(sender, instance, **kwargs):
     else: 
         pass     
     
-def emenda(sender, instance, **kwrags):
-    bobinagem = Bobinagem.objects.get(pk=instance.bobinagem.pk)
-    num = instance.num_emenda
-    x = instance.metros
-    if bobinagem.num_emendas == 0:
-        instance.num_emenda = 0
-        instance.emenda = 0
-    elif bobinagem.num_emendas > 0:
-        if num == 1:
-            instance.emenda = instance.metros
-        elif num == 2:
-            emenda = Emenda.objects.get(bobinagem=bobinagem, num_emenda=1)
-            instance.emenda = x + emenda.emenda
+# def emenda(sender, instance, **kwrags):
+#     bobinagem = Bobinagem.objects.get(pk=instance.bobinagem.pk)
+#     num = instance.num_emenda
+#     x = instance.metros
+#     if bobinagem.num_emendas == 0:
+#         instance.num_emenda = 0
+#         instance.emenda = 0
+#     elif bobinagem.num_emendas > 0:
+#         if num == 1:
+#             instance.emenda = instance.metros
+#         elif num == 2:
+#             emenda = Emenda.objects.get(bobinagem=bobinagem, num_emenda=1)
+#             instance.emenda = x + emenda.emenda
         
    
 def desperdicio(sender, instance, **kwargs):
@@ -415,7 +415,7 @@ pre_save.connect(area_bobinagem, sender=Bobinagem)
 pre_save.connect(comp_bobine, sender=Bobine)
 pre_save.connect(area_bobine, sender=Bobine)
 pre_save.connect(area_palete, sender=Palete)
-pre_save.connect(emenda, sender=Emenda)
+
 
 
 

@@ -4,8 +4,14 @@
 
 <div class="container">
     <div class="container">
+        {% if palete.estado == 'G' %}
         <a href="{% url 'producao:paletes'   %}" class="btn btn-primary" role="button">Voltar</a>
+        {% elif palete.estado == 'DM' %}
+        <a href="{% url 'producao:paletes_retrabalho'   %}" class="btn btn-primary" role="button">Voltar</a>
+        {% endif %}
+        {% if palete.estado == 'G'%}
         <a href="{% url 'producao:palete_create'   %}" class="btn btn-primary" role="button">Nova Palete</a>
+        {% endif %}
     </div>
     <div class="container">
         {% if palete.estado != 'DM'%}

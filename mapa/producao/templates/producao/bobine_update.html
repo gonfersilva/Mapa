@@ -5,40 +5,41 @@
 {% block content %}
 
 <div class="container">
-    <div class="container">
-        <a href="{% url 'producao:bobinestatus'  pk=object.bobinagem.pk %}" class="btn btn-primary" role="button">Voltar</a>
-    </div>
+    
     <div class="container">
     <h1>Bobine: {{ object.nome }}</h1>
     <form method="POST">
        {% csrf_token %} 
         <div class="row">
             <div class="container">
-                <h3>Estado: {{ form.estado }}</h3>
+                <h4>Estado: {{ form.estado }}</h4>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 container">
-                <h3>Cónico: {{ form.con }}</h3>
-                <h3>Descentrado: {{ form.descen }}</h3>
-                <h3>Presa: {{ form.presa }}</h3>
-                <h3>Estrela: {{ form.estrela }}</h3>
+            <div class="col-md-2 container">
+                <h4>Cónico: {{ form.con }}</h4>
+                <h4>Descentrado: {{ form.descen }}</h4>
+                <h4>Presa: {{ form.presa }}</h4>
+                <h4>Estrela: {{ form.estrela }}</h4>
             </div>
-            <div class="col-md-6 container">
-                <h3>Furos: {{ form.furos }}</h3>
-                <h3>Espessura: {{ form.esp }}</h3>
-                <h3>Troca NW: {{ form.troca_nw }}</h3>
-                <h3>Outros: {{ form.outros }}</h3>
+            <div class="col-md-2 container">
+                <h4>Furos: {{ form.furos }}</h4>
+                <h4>Espessura: {{ form.esp }}</h4>
+                <h4>Troca NW: {{ form.troca_nw }}</h4>
+                <h4>Outros: {{ form.outros }}</h4>
             </div>
         </div>
         <div class="row">
            <div class="container">
-                <h3>Observações:</h3>
-                <h3>{{ form.obs }}</h3>
+                <h4>Observações:</h4>
+                <h4>{{ form.obs }}</h4>
            </div>
         </div>
+        <div class="row col-md-5">
+                <a href="{% url 'producao:bobinestatus'  pk=object.bobinagem.pk %}" class="btn btn-primary pull-left" role="button">Voltar</a>
+                <input type="submit" class="btn btn-primary pull-right">
+        </div>
        
-       <input type="submit" class="btn btn-primary">
     </form>
 </div>
 </div>

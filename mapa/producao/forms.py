@@ -28,15 +28,15 @@ class BobinagemCreateForm(ModelForm):
         self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=False)
 
 
-class RetrabalhoCreateForm(ModelForm):
+# class RetrabalhoCreateForm(ModelForm):
     
-    class Meta:
-       model = Bobinagem
-       fields =['data', 'num_bobinagem', 'perfil', 'num_emendas', 'comp', 'diam', 'inico', 'fim', 'estado', 'obs']
+#     class Meta:
+#        model = Bobinagem
+#        fields =['data', 'num_bobinagem', 'perfil', 'num_emendas', 'comp', 'diam', 'inico', 'fim', 'estado', 'obs']
 
-    def __init__(self, *args, **kwargs):
-        super(RetrabalhoCreateForm, self).__init__(*args, **kwargs)
-        self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=True)
+#     def __init__(self, *args, **kwargs):
+#         super(RetrabalhoCreateForm, self).__init__(*args, **kwargs)
+#         self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=True)
 
 
        
@@ -58,16 +58,18 @@ class BobineStatus(ModelForm):
 
 
 
-class EmendasCreateForm(ModelForm):
+# class EmendasCreateForm(ModelForm):
     
-    class Meta:
-       model = Emenda
-       fields = [ 'bobine', 'metros', 'num_emenda'] 
+#     class Meta:
+#        model = Emenda
+#        fields = [ 'bobine', 'metros', 'num_emenda'] 
 
-    def __init__(self, *args, **kwargs):
-        super(EmendasCreateForm, self).__init__(*args, **kwargs)
-        self.fields['bobine'].queryset = Bobine.objects.filter(estado='DM')
+#     def __init__(self, *args, **kwargs):
+#         super(EmendasCreateForm, self).__init__(*args, **kwargs)
+#         self.fields['bobine'].queryset = Bobine.objects.filter(estado='DM')
 
 class Picagem(forms.Form):
     nome = forms.CharField(max_length=50)
+
+
     
