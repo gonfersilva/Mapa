@@ -208,9 +208,8 @@ def create_emenda(request, pk):
 def picagem(request, pk):
     palete = Palete.objects.get(pk=pk)
     bob = request.POST.get('q')
-    bob_filter = Bobine.objects.filter(nome=bob)
-    if bob_filter.exists():
-        bobine = Bobine.objects.get(nome=bob)
+    bobine = Bobine.objects.get(nome=bob)
+    if bobine:
         if bobine.palete:
             if bobine.palete == palete:
                 erro = 4
@@ -218,23 +217,55 @@ def picagem(request, pk):
             else:
                 erro = 5
                 return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-        else:    
-            if palete.num_bobines_act == palete.num_bobines:
-                erro = 3
-                return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro) 
-            else:
-                if bobine.estado == palete.estado or bobine.estado == 'LAB' and bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
-                    Bobine.add_bobine(palete.pk, bobine.pk)
-                    return redirect('producao:addbobinepalete', pk=palete.pk)
+        else:
+            if palete.estado == 'G' or palete.estado == 'LAB' :
+                if palete.num_bobines_act == palete.num_bobines:
+                     erro = 3
+                     return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
                 else:
-                    erro = 1
-                    return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
-    else:   
-        erro = 2
-        return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+                     if bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
+                         Bobine.add_bobine(palete.pk, bobine.pk)
+                         return redirect('producao:addbobinepalete', pk=palete.pk)
+                     else:
+                         erro = 1
+                         return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+            elif palete.estado == 'DM':
+                  Bobine.add_bobine(palete.pk, bobine.pk)
+                  return redirect('producao:addbobinepalete', pk=palete.pk) 
+            
+    else:
+         erro = 2
+         return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)          
+            
 
-    
-    
+    # if bob_filter.exists():
+    #     bobine = Bobine.objects.get(nome=bob)
+    #     if bobine.palete:
+    #         if bobine.palete == palete:
+    #             erro = 4
+    #             return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+    #         else:
+    #             erro = 5
+    #             return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+    #     else:
+    #         if palete.estado == 'DM':
+    #             Bobine.add_bobine(palete.pk, bobine.pk)
+    #             return redirect('producao:addbobinepalete', pk=palete.pk)
+    #         elif palete.estado == "G":
+    #             if palete.num_bobines_act == palete.num_bobines:
+    #                 erro = 3
+    #                 return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+    #             else:
+    #                 if bobine.estado == palete.estado or bobine.estado == 'LAB' and bobine.bobinagem.diam == palete.diametro and bobine.bobinagem.perfil.core == palete.core_bobines and bobine.largura.largura == palete.largura_bobines:
+    #                     Bobine.add_bobine(palete.pk, bobine.pk)
+    #                     return redirect('producao:addbobinepalete', pk=palete.pk)
+    #                 else:
+    #                     erro = 1
+    #                     return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+    # else:
+    #     erro = 2
+    #     return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
+   
 @login_required
 def add_bobine_palete_erro(request, pk, e):
     template_name='palete/add_bobine_erro.html'
@@ -328,3 +359,20 @@ def status_bobinagem(request, operation, pk):
             num += 1
             
     return redirect('producao:bobinagens')
+
+
+@login_required
+def palete_retrabalho(request):
+    palete = Palete.objects.filter(estado='DM')
+    template_name = 'palete/palete_retrabalho.html'
+    context = {
+        "palete":palete
+    }
+    return render(request, template_name, context)
+
+@login_required
+def palete_create_retrabalho(request):
+    palete = Palete.objects.create(estado="DM", num_bobines=0, largura_bobines=0, diametro=0, core_bobines='3', user=request.user)   
+    palete.save()
+    return redirect('producao:addbobinepalete', pk=palete.pk)
+

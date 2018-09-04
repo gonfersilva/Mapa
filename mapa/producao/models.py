@@ -74,6 +74,7 @@ class Consumo(models.Model):
 
 class Bobinagem(models.Model):
     STATUSP = (('G', 'G'), ('DM', 'DM12'), ('R', 'R'), ('BA', 'BA'), ('LAB', 'LAB'))
+    TIPONW = (('Suominen 25 gsm','Suominen 25 gsm'), ('Sandler SPUNLACE 100%PP','Sandler SPUNLACE 100%PP'), ('BCN 70%PP/30%PE','BCN 70%PP/30%PE'), ('Sandler','Sandler'), ('PEGAS BICO 17gsm','PEGAS BICO 17gsm'), ('Suominen','Suominen'), ('BCN','BCN'), ('ORMA','ORMA'), ('PEGAS 22','PEGAS 22'), ('SAWASOFT','SAWASOFT'), ('SAWABOND','SAWABOND'), ('Teksis','Teksis'), ('Union','Union'),('Radici','Radici'))
     user = models.ForeignKey(User, on_delete=models.PROTECT,verbose_name="Username")
     perfil = models.ForeignKey(Perfil, on_delete=models.PROTECT,verbose_name="Perfil")
     num_emendas = models.IntegerField(verbose_name="Número de emendas", null=True, blank=True, default=0)
@@ -82,10 +83,13 @@ class Bobinagem(models.Model):
     data = models.DateField(auto_now_add=False, auto_now=False, default=datetime.date.today,verbose_name="Data")
     num_bobinagem = models.PositiveIntegerField(verbose_name="Bobinagem nº")
     comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Final")
-    lotenwsup = models.CharField(verbose_name="Lote Nonwoven Sup", max_length=200, unique=False)
-    lotenwinf = models.CharField(verbose_name="Lote Nonwoven Inf", max_length=200, unique=False)
-    nwsup = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Nonwoven superior")
-    nwinf = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Nonwoven inferior")
+    tiponwsup = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Superior", null=True, blank=True)
+    tiponwinf = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Inferior", null=True, blank=True)
+    estado = models.CharField(max_length=3, choices=STATUSP, default='LAB', verbose_name="Estado")
+    lotenwsup = models.CharField(verbose_name="Lote Nonwoven Superior", max_length=200, unique=False)
+    lotenwinf = models.CharField(verbose_name="Lote Nonwoven Inferior", max_length=200, unique=False)
+    nwsup = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Superior")
+    nwinf = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Inferior")
     comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Emenda", null=True, blank=True)
     comp_cli = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Cliente", default=0)
     desper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Desperdício", default=0)
@@ -94,9 +98,8 @@ class Bobinagem(models.Model):
     inico = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Início")
     fim = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Fim")
     duracao = models.CharField(max_length=200, null=True, blank=True, verbose_name="Duração")
-    estado = models.CharField(max_length=3, choices=STATUSP, default='LAB', verbose_name="Estado")
     obs = models.TextField(max_length=500, null=True, blank=True, verbose_name="Observações", default="") 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    
 
     def __str__(self):
         return self.nome
@@ -124,7 +127,7 @@ class Palete(models.Model):
     timestamp       = models.DateTimeField(auto_now_add=True)
     data_pal        = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today)
     nome            = models.CharField(max_length=200, unique=True, null=True, blank=True, verbose_name="Palete")
-    num             = models.IntegerField(unique=True, null=True, blank=True, verbose_name="Palete nº")
+    num             = models.IntegerField(unique=False, null=True, blank=True, verbose_name="Palete nº")
     estado          = models.CharField(max_length=2, choices=STATUSP, default='G', verbose_name="Estado")
     area            = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área palete")
     comp_total      = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento palete")
@@ -184,7 +187,14 @@ class Bobine(models.Model):
     def add_bobine(cls, palete, bobine):
         bobine = Bobine.objects.get(pk=bobine)
         palete = Palete.objects.get(pk=palete)
-        if palete.num_bobines_act < palete.num_bobines:
+        if palete.estado == 'DM':
+            bobine.posicao_palete = palete.num_bobines_act + 1
+            bobine.palete = palete
+            palete.num_bobines_act += 1
+            palete.area = bobine.largura
+            bobine.save()
+            palete.save()
+        elif palete.num_bobines_act < palete.num_bobines:
             bobine.posicao_palete = palete.num_bobines_act + 1
             bobine.palete = palete
             palete.num_bobines_act += 1
@@ -291,21 +301,48 @@ def tempo_duracao(sender, instance, **kwargs):
         result_str = strftime("%H:%M", gmtime(result))
         instance.duracao = result_str
 
+
 def palete_nome(sender, instance, **kwargs):
     if not instance.nome:
         ano = instance.data_pal
         ano = ano.strftime('%Y')
-        pal = Palete.objects.latest('num')
-        pal = pal.num
-        instance.num = pal + 1
-        if pal + 1 < 10:    
-            instance.nome = 'P000%s-%s' % (pal + 1, ano)  
-        elif pal + 1 < 100:
-            instance.nome = 'P00%s-%s' % (pal + 1, ano)
-        elif pal + 1 < 1000:
-            instance.nome = 'P0%s-%s' % (pal + 1, ano)
-        else: 
-            instance.nome = 'P%s-%s' % (pal + 1, ano)
+        # pal = Palete.objects.latest('num')
+        # pal = pal.num
+        # instance.num = pal + 1
+        if instance.estado == 'DM':
+            palete = Palete.objects.filter(estado='DM')
+            num = 0
+            for p in palete:
+                if p.num > num:
+                     num = p.num
+
+            instance.num = num + 1
+            if num + 1 < 10:
+                instance.nome = 'DM000%s-%s' % (num + 1, ano)
+            elif pal + 1 < 100:
+                instance.nome = 'DM00%s-%s' % (num + 1, ano)
+            elif pal + 1 < 1000:
+                instance.nome = 'DM0%s-%s' % (num + 1, ano)
+            else:
+                instance.nome = 'DM%s-%s' % (num + 1, ano)
+
+        elif instance.estado == 'G':
+             palete = Palete.objects.filter(estado='G')
+             num = 0
+             for p in palete:
+                if p.num > num:
+                     num = p.num
+             instance.num = num + 1   
+             if num + 1 < 10:    
+                instance.nome = 'P000%s-%s' % (num + 1, ano)  
+             elif num + 1 < 100:
+                instance.nome = 'P00%s-%s' % (num + 1, ano)
+             elif num + 1 < 1000:
+                instance.nome = 'P0%s-%s' % (num + 1, ano)
+             else: 
+                instance.nome = 'P%s-%s' % (num + 1, ano)
+                
+             
 
 
 def area_bobinagem(sender, instance, **kwargs):
@@ -321,8 +358,9 @@ def area_palete(sender, instance, **kwargs):
     area = 0
     comp = 0
     for b in bobine:
-        area = area + b.area 
-        comp = comp + b.bobinagem.comp
+        if b.palete:
+            area = area + b.area 
+            comp = comp + b.bobinagem.comp
         
     instance.area = area
     instance.comp_total = comp
@@ -357,7 +395,8 @@ def desperdicio(sender, instance, **kwargs):
         instance.comp_cli = instance.comp_par * Decimal('1.05')
         instance.desper = (instance.comp - instance.comp_cli) / 1000 * instance.perfil.largura_bobinagem
    
-          
+
+
         
 
 

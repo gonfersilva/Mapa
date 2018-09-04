@@ -1,13 +1,13 @@
-{% extends "layout.html "%} {% block title %}Bobinagens | {{ block.super }}{% endblock %} {% block content %}
+{% extends "layout.html "%} {% block title %}Paletes para retrabalho | {{ block.super }}{% endblock %} {% block content %}
 <div class="container">
     <a href="{% url 'home' %}" class="btn btn-primary" role="button">Voltar</a>
-    <a href="{% url 'producao:palete_create' %}" class="btn btn-primary pull-right" role="button">Criar palete</a>
-    <a href="{% url 'producao:paletes_retrabalho' %}" class="btn btn-primary pull-right" role="button">Paletes para retrabalho</a>
+    <a href="{% url 'producao:palete_create_retrabalho' %}" class="btn btn-primary pull-right" role="button">Criar palete de retrabalho</a>
+
 
 </div>
 <div class="container table-responsive">
+    <H1>Paletes Retrabalho</H1>
 
-    <h1>Paletes</h1>
     <table class="table fit">
         <tr>
             <th>Palete</th>
@@ -15,9 +15,9 @@
             <th>Data</th>
             <th>Estado</th>
             <th>Bobines</th>
-            <th>Core (")</th>
+            <!-- <th>Core (")</th>
             <th>Largura</th>
-            <th>Diâmetro (mm)</th>
+            <th>Diâmetro (mm)</th> -->
             <th>Área (m2)</th>
             <th>Comprimento total (m)</th>
             <th></th>
@@ -27,7 +27,7 @@
 
 
         </tr>
-        {% for obj in object_list %} {% if not obj.num == 0 and not obj.estado == 'DM' %}
+        {% for obj in palete %} {% if not obj.num == 0 %}
         <tr>
             <td><a href='/producao/palete/{{ obj.id }}'>{{ obj.nome }}</a></td>
             <td>{{ obj.num }}</td>
@@ -40,10 +40,10 @@
             {% else %}
             <td id="estado_rejected">{{ obj.estado }}</td>
             {% endif %}
-            <td>{{ obj.num_bobines_act }} / {{ obj.num_bobines }}</td>
-            <td>{{ obj.core_bobines }}</td>
+            <td>{{ obj.num_bobines_act }}</td>
+            <!-- <td>{{ obj.core_bobines }}</td>
             <td>{{ obj.largura_bobines }}</td>
-            <td>{{ obj.diametro }}</td>
+            <td>{{ obj.diametro }}</td> -->
             <td>{{ obj.area }}</td>
             <td>{{ obj.comp_total }}</td>
 

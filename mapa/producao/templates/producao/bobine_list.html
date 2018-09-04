@@ -8,7 +8,103 @@
         <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Voltar</a>
     </div>
 <div class="container">
-    <h1>Bobinagem: {{ bobinagem.nome }}</h1>
+    <div class="row">
+            <h2>Detalhes:{{ bobinagem.nome }}</h2>
+            <br/>
+            
+            <div class="container col-md-6">
+                <!-- <p>Data: {{ bobinagem.data|date:"d-n-Y" }}</p>
+                <p>Emendas: {{ bobinagem.num_emendas }}</p>
+                <p>Comprimento: {{ bobinagem.comp }}</p>
+                <p>Diâmetro: {{ bobinagem.diam }}</p>
+                <p>Área: {{ bobinagem.area }}</p>
+                <p>Ínicio: {{ bobinagem.inico|date:"G:i"  }}</p>
+                <p>Fim: {{ bobinagem.fim|date:"G:i"  }}</p>
+                <p>Duração: {{ bobinagem.duracao }}</p> -->
+                <table>
+                    <tr>
+                       <th>Data:</th>
+                       <td>{{ bobinagem.data|date:"d-n-Y" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Emendas:</th>
+                        <td>{{ bobinagem.num_emendas }}</td>
+                    </tr>
+                    <tr>
+                        <th>Comprimento (m):</th>
+                        <td>{{ bobinagem.comp }}</td>
+                    </tr>
+                    <tr>
+                        <th>Diâmetro (mm):</th>
+                        <td>{{ bobinagem.diam }}</td>
+                    </tr>
+                    <tr>
+                        <th>Área (m2):</th>
+                        <td>{{ bobinagem.area }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ínicio:</th>
+                        <td>{{ bobinagem.inico|date:"G:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fim:</th>
+                        <td>{{ bobinagem.fim|date:"G:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Duração:</th>
+                        <td>{{ bobinagem.duracao }}</td>
+                    </tr>
+                         
+                    
+                </table>
+            </div>
+            <div class="container col-md-6">
+                    <!-- <div class="container col-md-6">
+                        <h2>Nonwoven Superior</h2>
+                        <p>{{ bobinagem.tiponwsup }}</p>
+                        <p>{{ bobinagem.lotenwsup }}</p>
+                        <p>{{ bobinagem.nwsup }}</p>
+                    </div>
+                    <div class="container col-md-6">
+                        <h2>Nonwoven Inferior</h2>
+                        <p>{{ bobinagem.tiponwinf }}</p>
+                        <p>{{ bobinagem.lotenwinf }}</p>
+                        <p>{{ bobinagem.nwinf }}</p>
+                    </div> -->
+                    <table class="table table-fixed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Nonwoven Superior</th>
+                                <th>Nonwoven inferior</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Tipo:</th>
+                                <td>{{ bobinagem.tiponwsup }}</td>
+                                <td>{{ bobinagem.tiponwinf }}</td>
+                            </tr>
+                            <tr>
+                                <th>Lote:</th>
+                                <td>{{ bobinagem.lotenwsup }}</td>
+                                <td>{{ bobinagem.lotenwinf }}</td>
+                            </tr>
+                            <tr>
+                                <th>Consumo (m):</th>
+                                <td>{{ bobinagem.nwsup }}</td>
+                                <td>{{ bobinagem.nwinf }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+            </div>
+              
+
+    </div>
+    <br/>
+    <div class="row">
+    
     <!-- {% if bobinagem.estado == 'G' %}
         <h2 id="estado_good">{{ bobinagem.estado }}</h2>
     {% elif bobinagem.estado == 'DM' %}
@@ -20,7 +116,7 @@
     {% else %}
         <h2 id="estado_lab">{{ bobinagem.estado }}</h2>
     {% endif %} -->
-    
+        <h3>Bobines</h3>
       <table class="table table-fixed">
           <thead>
             <tr>
@@ -116,7 +212,7 @@
         <p></p>
         {% else %}
         <div class="container">
-            <h3>Observações:</h3>
+            <p>Observações:</p>
             <p>{{ bobinagem.obs }}</p>
             
             
@@ -124,7 +220,7 @@
         {% endif %}
         {% if bobinagem.num_emendas > 0 %}
         <div class="container">
-                <h3>Emendas</h3>
+                <p>Emendas</p>
                 {% if emenda.bobinagem != "" %}
                     <table class="table">
                         <tr>
@@ -158,7 +254,7 @@
 
 
         </div>
-        
+    </div>
     </div>
 </div>
 

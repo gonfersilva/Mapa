@@ -7,16 +7,9 @@
     {% bootstrap_field form.data %}
     {% bootstrap_field form.data %} -->
     {% csrf_token %}
-    <button onclick="goBack()" class="btn btn-primary">Voltar</button>
+    <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Voltar</a>
     <input type="submit" class="btn btn-primary" value="Gravar">
     
 </form>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
 
-   
-
-</script>
