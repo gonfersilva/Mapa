@@ -25,7 +25,14 @@
         <div class="row">
                 <div class="col-md-12">
                         <h3>{{ report.assunto }}</h3>
+                        <h3>Descrição:</h3>
                         <p> {{ report.descricao }}</p>
+                        <h3>Resposta:</h3>
+                        {% if report.resposta == None %}
+                        <p></p>
+                        {% else %}
+                        <p> {{ report.resposta }}</p>
+                        {% endif %}
                         {% if report.anexo == '' %}
                         <h1></h1>
                         {% else %}

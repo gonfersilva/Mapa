@@ -8,6 +8,7 @@ class Report(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     assunto = models.CharField(verbose_name="Assunto", max_length=30, unique=False)
     descricao = models.TextField(max_length=500, verbose_name="Descrição")
+    resposta = models.TextField(max_length=500, verbose_name="Resposta", blank=True, null=True)
     modulo =  models.CharField(max_length=20, choices=MODULO, default='', verbose_name="Módulo")
     estado =  models.CharField(max_length=20, choices=STATUS, default='Aberto', verbose_name="Estado")
     anexo = models.FileField(null=True, blank=True)

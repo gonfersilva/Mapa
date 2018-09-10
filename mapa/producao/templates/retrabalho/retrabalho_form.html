@@ -1,13 +1,13 @@
 {% load bootstrap3 %}
 
-<form method="POST" action="{% url 'producao:bobinagem_create' %}" onkeypress="return event.keyCode != 13;">
+<form method="POST" action="{% url 'producao:retrabalho_create' %}" onkeypress="return event.keyCode != 13;">
    <!-- {% bootstrap_form form %} 
     {% bootstrap_field form.data %}
     {% bootstrap_field form.num_bobinagem %}
     {% bootstrap_field form.data %}
     {% bootstrap_field form.data %} -->
     <div class="container">
-        <h1>Criar bobinagem</h1>
+        <h1>Retrabalho</h1>
     <div class="row">
             <div class="container col-sm-4">
                     {% bootstrap_field form.data %}
@@ -55,73 +55,32 @@
                     
         
             </div>
-            
-    </div>
-    <div class="row">
             <div class="container col-sm-4">
+                    
                     {% bootstrap_field form.comp %}
                     
-                    
-        
-            </div>
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.comp_par %}
-                    
-              </div>
-        
-            
-    </div>
-    <h3>Nonwoven</h3>
-    <div class="row">
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.tiponwsup %}
-                    
-                    
-        
-            </div>
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.tiponwinf %}
-                    
-                    
         
             </div>
             
     </div>
     <div class="row">
             <div class="container col-sm-4">
-                    {% bootstrap_field form.lotenwsup %}
+                    {% bootstrap_field form.num_emendas %}
                     
                     
         
             </div>
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.lotenwinf %}
-                    
-                    
+           
         
-            </div>
             
     </div>
-    <div class="row">
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.nwsup %}
-                    
-                    
-        
-            </div>
-            <div class="container col-sm-4">
-                    {% bootstrap_field form.nwinf %}
-                    
-                    
-        
-            </div>
-            
-    </div>
+    
+   
     </br>
     <div class="row">    
             {% csrf_token %}
             <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary pull-left" role="button">Voltar</a>
-            <input type="submit" class="btn btn-primary pull-right" value="Gravar">
+            <input type="submit" class="btn btn-primary pull-right" value="Submeter">
         </div>
     
 </div>

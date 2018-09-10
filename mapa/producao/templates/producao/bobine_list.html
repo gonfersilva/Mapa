@@ -5,7 +5,11 @@
 
 <div class="container">
     <div class="container">
+        {% if bobinagem.perfil.retrabalho == False %}
         <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Voltar</a>
+        {% else %}
+        <a href="{% url 'producao:retrabalho_home' %}" class="btn btn-primary" role="button">Voltar</a>
+        {% endif %}
     </div>
 <div class="container">
     <div class="row">

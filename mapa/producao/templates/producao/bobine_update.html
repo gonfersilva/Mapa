@@ -36,7 +36,12 @@
            </div>
         </div>
         <div class="row col-md-5">
+            {% if object.palete.estado != "DM"%}
                 <a href="{% url 'producao:bobinestatus'  pk=object.bobinagem.pk %}" class="btn btn-primary pull-left" role="button">Voltar</a>
+
+            {% else %}
+            <a href="{% url 'producao:retrabalho_home' %}" class="btn btn-primary pull-left" role="button">Voltar</a>
+            {% endif %}
                 <input type="submit" class="btn btn-primary pull-right">
         </div>
        

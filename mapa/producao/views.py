@@ -5,7 +5,7 @@ from django import forms
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse, HttpResponse
 from django.views.generic import CreateView
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, View, FormView, UpdateView
-from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm
+from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm, RetrabalhoCreateForm
 from .models import Largura, Perfil, Bobinagem, Bobine, Palete, Emenda
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -271,7 +271,10 @@ def bobinagem_delete(request, pk):
     bobine = Bobine.objects.filter(bobinagem=obj)
     if request.method == "POST":
         obj.delete()
-        return redirect('producao:bobinagens')
+        if obj.perfil.retrabalho == False:
+            return redirect('producao:bobinagens')
+        else:
+            return redirect('producao:retrabalho_home')
        
             
     context = {
@@ -350,3 +353,25 @@ def palete_create_retrabalho(request):
     palete.save()
     return redirect('producao:addbobinepalete', pk=palete.pk)
 
+@login_required
+def retrabalho_home(request):
+    palete = Palete.objects.filter(estado='DM')
+    bobine = Bobine.objects.all()
+    bobinagem = Bobinagem.objects.all()
+    template_name = 'retrabalho/retrabalho_home.html'
+
+    context = {
+        "palete": palete,
+        "bobine": bobine,
+        "bobinagem": bobinagem,
+    }
+    return render(request, template_name, context)
+
+class RetrabalhoCreateView(LoginRequiredMixin, CreateView):
+    form_class = RetrabalhoCreateForm
+    template_name = 'retrabalho/retrabalho_create.html'
+    success_url = "/producao/retrabalho/"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

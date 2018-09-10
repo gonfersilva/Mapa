@@ -1,0 +1,77 @@
+{% extends "layout.html " %} 
+{% block title %}retrabalho | {{ block.super }}{% endblock %} 
+{% block content %}
+<div class="container">
+    <a href="{% url 'home' %}" class="btn btn-primary" role="button">Voltar</a>
+    <a  href="{% url 'producao:retrabalho_create' %}" class="btn btn-primary pull-right" role="button">Retrabalhar</a>
+    
+
+</div>
+<div class="container table-responsive">
+
+    <h2>Bobines para retrabalho</h2>
+    <table class="table fit">
+            <tr>
+                <th>Bobine</th>
+                <th>Palete</th>
+                <th>Estado</th>
+                <th>Largura</th>
+                <th>Comprimento (m)</th>
+                <th>Comprimento actual (m)</th>
+                <th>Área (m2)</th>
+                           
+                
+            </tr>
+            {% for b in bobine %}
+            {% if b.palete.estado == 'DM' %}
+            <tr>
+                <td><a href="{% url 'producao:bobineupdate' b.pk %}">{{ b.nome }}</a></td>
+                <td>{{ b.palete }}</td>
+                <td>{{ b.estado}}</td>
+                <td>{{ b.largura.largura }}</td>
+                <td>{{ b.bobinagem.comp }}</td>
+                <td>{{ b.comp_actual }}</td>
+                <td>{{ b.area }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    
+
+        <h2>Bobinagens retrabalhadas</h2>
+        <table class="table fit">
+                <tr>
+                    <th>Bobinagem</th>
+                    <th>Data</th>
+                    <th>Estado</th>
+                    <th>Nº de Emendas</th>
+                    <th>Core</th>
+                    <th>Nº de Bobines</th>
+                    <th>Comprimento (m)</th>
+                    <th>Área (m2)</th>
+                               
+                    
+                </tr>
+                {% for b in bobinagem %}
+                {% if b.perfil.retrabalho == True %}
+                <tr>
+                    
+                    <td><a href='{{ b.get_absolute_url }}'>{{ b.nome }}</a></td>
+                    <td>{{ b.data|date:"d-n-Y"  }}</td>
+                    <td>{{ b.estado  }}</td>
+                    <td>{{ b.num_emendas  }}</td>
+                    <td>{{ b.perfil.core }}</td>
+                    <td>{{ b.perfil.num_bobines }}</td>
+                    <td>{{ b.comp_cli }}</td>
+                    <td>{{ b.area }}</td>
+                    
+                    <td><a href="{% url 'producao:bobinagem_delete' pk=b.pk %}" class="btn btn-primary">Apagar</a></td>     
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+
+
+</div>
+
+{% endblock %}

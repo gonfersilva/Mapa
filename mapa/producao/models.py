@@ -86,11 +86,11 @@ class Bobinagem(models.Model):
     tiponwsup = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Superior", null=True, blank=True)
     tiponwinf = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Inferior", null=True, blank=True)
     estado = models.CharField(max_length=3, choices=STATUSP, default='LAB', verbose_name="Estado")
-    lotenwsup = models.CharField(verbose_name="Lote Nonwoven Superior", max_length=200, unique=False)
-    lotenwinf = models.CharField(verbose_name="Lote Nonwoven Inferior", max_length=200, unique=False)
-    nwsup = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Superior")
-    nwinf = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Inferior")
-    comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Emenda", null=True, blank=True)
+    lotenwsup = models.CharField(verbose_name="Lote Nonwoven Superior", max_length=200, unique=False, null=True, blank=True,)
+    lotenwinf = models.CharField(verbose_name="Lote Nonwoven Inferior", max_length=200, unique=False, null=True, blank=True,)
+    nwsup = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Superior", null=True, blank=True)
+    nwinf = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Consumo Nonwoven Inferior", null=True, blank=True)
+    comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Emenda", null=True, blank=True, default=0)
     comp_cli = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Cliente", default=0)
     desper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Desperdício", default=0)
     diam = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Diametro")
@@ -117,7 +117,6 @@ class Bobinagem(models.Model):
         return f"/producao/bobinagem/{self.id}"
 
 
-    
 
 
 class Palete(models.Model):
@@ -239,17 +238,19 @@ def bobinagem_nome(sender, instance, **kwargs):
     if not instance.nome:
         data = instance.data
         data = data.strftime('%Y%m%d')
+        map(int, data)
         if instance.perfil.retrabalho == True and instance.num_emendas > 0:
             if instance.num_bobinagem < 10:
-                instance.nome = '3%s-0%s' % (data, instance.num_bobinagem)
+                # instance.nome = '3%s-0%s' % (data, instance.num_bobinagem)
+                instance.nome = '3%s-0%s' % (data[1:], instance.num_bobinagem)
 
             else:
-                instance.nome = '3%s-%s' % (data, instance.num_bobinagem)
+                instance.nome = '3%s-0%s' % (data[1:], instance.num_bobinagem)
         elif instance.perfil.retrabalho == True and instance.num_emendas == 0:
             if instance.num_bobinagem < 10:
-                instance.nome = '4%s-0%s' % (data, instance.num_bobinagem)
+                instance.nome = '4%s-0%s' % (data[1:], instance.num_bobinagem)
             else:
-                instance.nome = '4%s-%s' % (data, instance.num_bobinagem)
+                instance.nome = '4%s-%s' % (data[1:], instance.num_bobinagem)
         else:
             if instance.num_bobinagem < 10:
                 instance.nome = '%s-0%s' % (data, instance.num_bobinagem)
@@ -387,13 +388,17 @@ def comp_bobine(sender, instance, **kwargs):
         
    
 def desperdicio(sender, instance, **kwargs):
-    desp = instance.comp - instance.comp_par
-    x = instance.comp_par * Decimal('0.05')
-    if desp <= x:
+    if instance.comp_par > 0:
+        desp = instance.comp - instance.comp_par
+        x = instance.comp_par * Decimal('0.05')
+        if desp <= x:
+            instance.comp_cli = instance.comp
+        else:        
+            instance.comp_cli = instance.comp_par * Decimal('1.05')
+            instance.desper = (instance.comp - instance.comp_cli) / 1000 * instance.perfil.largura_bobinagem
+    elif instance.comp_par == 0:
         instance.comp_cli = instance.comp
-    else:        
-        instance.comp_cli = instance.comp_par * Decimal('1.05')
-        instance.desper = (instance.comp - instance.comp_cli) / 1000 * instance.perfil.largura_bobinagem
+        instance.desper = 0
    
 
 

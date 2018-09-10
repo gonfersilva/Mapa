@@ -23,20 +23,20 @@ class BobinagemCreateForm(ModelForm):
        model = Bobinagem
        fields =['data', 'num_bobinagem', 'perfil', 'tiponwsup', 'tiponwinf', 'lotenwsup','lotenwinf',  'nwsup', 'nwinf', 'comp', 'comp_par', 'diam', 'inico', 'fim', 'estado', 'obs']
 
-    def __init__(self, *args, **kwargs):
-        super(BobinagemCreateForm, self).__init__(*args, **kwargs)
-        self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=False)
+    # def __init__(self, *args, **kwargs):
+    #     super(BobinagemCreateForm, self).__init__(*args, **kwargs)
+    #     self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=False)
 
 
-# class RetrabalhoCreateForm(ModelForm):
+class RetrabalhoCreateForm(ModelForm):
     
-#     class Meta:
-#        model = Bobinagem
-#        fields =['data', 'num_bobinagem', 'perfil', 'num_emendas', 'comp', 'diam', 'inico', 'fim', 'estado', 'obs']
+     class Meta:
+        model = Bobinagem
+        fields =['data', 'num_bobinagem', 'perfil', 'num_emendas', 'comp', 'diam', 'inico', 'fim', 'estado', 'obs']
 
-#     def __init__(self, *args, **kwargs):
-#         super(RetrabalhoCreateForm, self).__init__(*args, **kwargs)
-#         self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=True)
+     def __init__(self, *args, **kwargs):
+         super(RetrabalhoCreateForm, self).__init__(*args, **kwargs)
+         self.fields['perfil'].queryset = Perfil.objects.filter(retrabalho=True)
 
 
        

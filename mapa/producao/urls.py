@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from . import views
-from .views import palete_retrabalho, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
+from .views import RetrabalhoCreateView, palete_retrabalho, retrabalho_home, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
 
 app_name="producao" 
 
@@ -26,5 +26,7 @@ urlpatterns = [
     url(r'^palete/(?P<pk>\d+)/(?P<e>\d+)/$', add_bobine_palete_erro, name='addbobinepaleteerro'),
     url(r'^palete/(?P<pk>\d+)/picagem/$', picagem, name='picagem'),
     url(r'^palete/(?P<operation>.+)/(?P<pk_bobine>\d+)/(?P<pk_palete>\d+)/$', palete_change, name='paletebobine'),
+    url(r'^retrabalho/$', retrabalho_home, name='retrabalho_home'),
+    url(r'^retrabalho/create/$', RetrabalhoCreateView.as_view(), name='retrabalho_create'),
     
 ]

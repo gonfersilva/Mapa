@@ -12,7 +12,7 @@
 <div class="container table-responsive">
     
 
-                <table id="fixed_hdr2" class="table fit">
+                <table class="table fit">
                         <tr>
                             <th>Bobinagem</th>
                             <!-- <th>Estado</th> -->
@@ -41,7 +41,7 @@
                             
                         </tr>
                         {% for obj in object_list %}
-                        {% if obj.perfil.retrabalho == False %}
+                        
                         <tr>
                             <td><a href='{{ obj.get_absolute_url }}'>{{ obj.nome }}</a></td>
                             
@@ -91,7 +91,7 @@
                          
                              
                         </tr>
-                        {% endif %}
+                        
                         {% endfor %}
                     </table>
        
