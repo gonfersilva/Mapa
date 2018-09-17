@@ -1,0 +1,90 @@
+{% extends "layout.html " %} 
+{% block title %}Retrabalho | {{ block.super }}{% endblock %} 
+{% block content %}
+<div class="container">
+    <a href="#" class="btn btn-primary" role="button">Voltar</a>
+    
+    
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="container">
+            <form method="GET" action='' >{% csrf_token %}
+                    <input type="text" name='l' placeholder="Largura" autofocus/>
+                    <input type="submit" class="btn btn-success" value="Pesquisar"/>
+            </form>
+        </div>
+
+    </div>
+    <div class="row">
+        
+        <div class="container trable-responsive col-md-6">
+            <table class="table fit">
+                <thead>
+                        <tr>
+                            <th>Palete</th>
+                            <th>Nº Bobines</th>
+                            <th>Largura</th>
+                            
+                        </tr>
+
+                </thead>
+                <tbody>
+                    
+                        {% for p in palete %}
+                            {% if p.num != 0 %}
+                            <tr>
+                                <td>{{ p.nome }}</td>
+                                <td>{{ p.num_bobines_act }} / {{ p.num_bobines }}</td>
+                                <td>{{ p.largura_bobines }}</td>
+                                
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    
+
+                </tbody>
+                
+            </table>
+        </div>
+        <div class="container trable-responsive col-md-6">
+            <table class="table fit">
+                <thead>
+                        <tr>
+                            <th>Palete</th>
+                            <th>Nº Bobines</th>
+                            <th>Largura</th>
+                            
+                        </tr>
+
+                </thead>
+                <tbody>
+                    
+                        {% for p in palete %}
+                            {% if p.num != 0 %}
+                            <tr>
+                                <td>{{ p.nome }}</td>
+                                <td>{{ p.num_bobines_act }} / {{ p.num_bobines }}</td>
+                                <td>{{ p.largura_bobines }}</td>
+                                
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    
+
+                </tbody>
+                
+            </table>
+        </div>
+    </div>
+    
+    
+</div>
+<script>
+       
+</script>
+
+
+
+{% endblock %}

@@ -9,6 +9,10 @@
         <a href="{% url 'producao:bobinagens' %}" class="btn btn-primary" role="button">Voltar</a>
         {% else %}
         <a href="{% url 'producao:retrabalho_home' %}" class="btn btn-primary" role="button">Voltar</a>
+        
+        {% endif %}
+        {% if user.is_staff %}
+        <a href="{% url 'producao:bobinagemupdate' bobinagem.pk %}" class="btn btn-primary pull-right" role="button">Editar</a>
         {% endif %}
     </div>
 <div class="container">

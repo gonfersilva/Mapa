@@ -5,7 +5,7 @@ from django import forms
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse, HttpResponse
 from django.views.generic import CreateView
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, View, FormView, UpdateView
-from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm, RetrabalhoCreateForm
+from .forms import PerfilCreateForm, LarguraForm, BobinagemCreateForm, BobineStatus, PaleteCreateForm
 from .models import Largura, Perfil, Bobinagem, Bobine, Palete, Emenda
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -94,6 +94,12 @@ class BobineUpdate(LoginRequiredMixin, UpdateView):
     model = Bobine
     fields = [ 'estado', 'con', 'descen', 'presa', 'estrela', 'furos', 'esp', 'troca_nw', 'outros', 'obs']
     template_name = 'producao/bobine_update.html'
+
+class BobinagemUpdate(LoginRequiredMixin, UpdateView):
+    model = Bobinagem
+    fields = ['tiponwsup', 'tiponwinf', 'lotenwsup', 'lotenwinf', 'nwsup', 'nwinf', 'comp', 'comp_par', 'diam', 'inico', 'fim']
+    template_name = 'producao/bobinagem_update.html'
+    
     
 class PaleteListView(LoginRequiredMixin, ListView):
     model = Palete
@@ -367,11 +373,33 @@ def retrabalho_home(request):
     }
     return render(request, template_name, context)
 
-class RetrabalhoCreateView(LoginRequiredMixin, CreateView):
-    form_class = RetrabalhoCreateForm
-    template_name = 'retrabalho/retrabalho_create.html'
-    success_url = "/producao/retrabalho/"
+def retrabalho_filter(request):
+    # palete = Palete.objects.filter(estado="DM")
+    # bobine = Bobine.objects.all()
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+    # q_largura = request.GET.get("l")
+    # if q_largura:
+    #     palete = palete.filter(largura_bobines__gte=q_largura)
+   
+    palete = Palete.objects.all()
+    
+
+    q_largura = request.GET.get("l")
+    
+
+    if q_largura:
+        palete = palete.filter(largura_bobines__gte=q_largura)
+        
+
+        
+
+        
+
+    template_name = 'retrabalho/retrabalho_inicio.html'
+    context = {
+        
+        "palete": palete,
+        
+    }
+
+    return render(request, template_name, context)

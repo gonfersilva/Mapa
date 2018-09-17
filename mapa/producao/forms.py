@@ -1,5 +1,6 @@
 from .models import Perfil, Largura, Bobinagem, Bobine, Palete, Emenda
 from django.forms import ModelForm, formset_factory, inlineformset_factory, modelformset_factory
+import datetime, time
 from django import forms
 
 class PerfilCreateForm(ModelForm):
@@ -18,7 +19,7 @@ class LarguraForm(ModelForm):
 
 
 class BobinagemCreateForm(ModelForm):
-    
+    # data = forms.DateField(widget=forms.SelectDateWidget)
     class Meta:
        model = Bobinagem
        fields =['data', 'num_bobinagem', 'perfil', 'tiponwsup', 'tiponwinf', 'lotenwsup','lotenwinf',  'nwsup', 'nwinf', 'comp', 'comp_par', 'diam', 'inico', 'fim', 'estado', 'obs']
@@ -56,7 +57,10 @@ class BobineStatus(ModelForm):
         model = Bobine
         fields = [ 'largura', 'estado', 'con', 'descen', 'presa', 'estrela', 'furos', 'esp', 'troca_nw', 'outros', 'obs'] 
 
-
+# class BobinagemUpdate(ModelForm):
+#      class Meta:
+#         model = Bobinagem
+#         fields = ['tiponwsup', 'tiponwinf', 'lotenwsup', 'lotenwinf', 'nwsup', 'nwinf', 'comp', 'comp_par', 'diam', 'inico', 'fim']
 
 # class EmendasCreateForm(ModelForm):
     
