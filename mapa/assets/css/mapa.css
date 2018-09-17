@@ -51,3 +51,9 @@
     color: white;
     text-align: center;
 }
+
+#estado_ind {
+    background-color: blue;
+    color: yellow;
+    text-align: center;
+}

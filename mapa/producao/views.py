@@ -340,6 +340,8 @@ def status_bobinagem(request, operation, pk):
                 bobine.estado = 'DM'
                 bobine.save()
             num += 1
+     
+    
             
     return redirect('producao:bobinagens')
 

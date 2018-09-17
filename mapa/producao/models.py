@@ -279,6 +279,8 @@ def create_bobine(sender, instance, **kwargs):
                 bob.estado = 'G'
             elif bob.bobinagem.estado == 'BA':
                 bob.estado = 'BA'
+            elif bob.bobinagem.estado == 'IND':
+                bob.estado = 'IND'
             else:
                 bob.estado = 'LAB'
             bob.save() 
