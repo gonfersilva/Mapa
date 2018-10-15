@@ -3,6 +3,5 @@ mapa/mapa/settings/production.py
 *.pyc
 __pycache__
 db.sqlite3
-
-
+settings
 
