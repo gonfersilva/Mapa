@@ -1,4 +1,3 @@
-settings
 local.py
 production.py
 *.pyc
