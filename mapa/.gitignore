@@ -1,7 +1,4 @@
 *.pyc
-__pycache__
+migrations
 db.sqlite3
-local.py
-production.py
-
 
