@@ -1,5 +1,5 @@
-local.py
-production.py
+mapa/mapa/settings/local.py
+mapa/mapa/settings/production.py
 *.pyc
 __pycache__
 db.sqlite3
