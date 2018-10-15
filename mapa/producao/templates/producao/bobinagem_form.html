@@ -1,5 +1,5 @@
 {% load bootstrap3 %}
-
+<div class="conatiner size-table">
 <form method="POST" action="{% url 'producao:bobinagem_create' %}" onkeypress="return event.keyCode != 13;">
    <!-- {% bootstrap_form form %} 
     {% bootstrap_field form.data %}
@@ -7,7 +7,7 @@
     {% bootstrap_field form.data %}
     {% bootstrap_field form.data %} -->
     <div class="container">
-        <h1>Criar bobinagem</h1>
+        <h1 id="center">Criar bobinagem</h1><br>
     <div class="row">
             <div class="container col-sm-4">
                     {% bootstrap_field form.data %}
@@ -72,6 +72,7 @@
             
     </div>
     <h3>Nonwoven</h3>
+    <div></div>
     <div class="row">
             <div class="container col-sm-4">
                     {% bootstrap_field form.tiponwsup %}
@@ -85,6 +86,7 @@
                     
         
             </div>
+            
             
     </div>
     <div class="row">
@@ -117,6 +119,14 @@
             </div>
             
     </div>
+    <div class="row">
+        <div class="container col-sm-12">
+                {% bootstrap_field form.obs %}
+                
+                
+    
+        </div>
+    </div>
     </br>
     <div class="row">    
             {% csrf_token %}
@@ -128,5 +138,5 @@
 
     
 </form>
-
+</div>
 

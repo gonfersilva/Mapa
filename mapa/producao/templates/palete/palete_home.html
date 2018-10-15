@@ -1,14 +1,16 @@
 {% extends "layout.html "%} {% block title %}Bobinagens | {{ block.super }}{% endblock %} {% block content %}
 <div class="container">
-    <a href="{% url 'home' %}" class="btn btn-primary" role="button">Voltar</a>
+    <a href="{% url 'producao:producao_home' %}" class="btn btn-primary" role="button">Voltar</a>
     <a href="{% url 'producao:palete_create' %}" class="btn btn-primary pull-right" role="button">Criar palete</a>
-    <a href="{% url 'producao:paletes_retrabalho' %}" class="btn btn-primary pull-right" role="button">Paletes para retrabalho</a>
+    
 
 </div>
-<div class="container table-responsive">
-
-    <h1>Paletes</h1>
-    <table class="table fit">
+<div class="container table-responsive size-table">
+        <h1 id="center">Paletes</h1><br>
+    <div class="col-md-1"></div>
+    <div class="container col-md-8">
+    
+    <table class="table fit" id="center">
         <tr>
             <th>Palete</th>
             <th>Nº</th>
@@ -55,7 +57,8 @@
         {% endif %} {% endfor %}
     </table>
 
-
+</div>
+<div class="col-md-2"></div>
 
 
 

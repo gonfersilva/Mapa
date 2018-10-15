@@ -82,7 +82,7 @@ class Bobinagem(models.Model):
     nome = models.CharField(verbose_name="Bobinagem", max_length=200, unique=True)
     data = models.DateField(auto_now_add=False, auto_now=False, default=datetime.date.today,verbose_name="Data")
     num_bobinagem = models.PositiveIntegerField(verbose_name="Bobinagem nº")
-    comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Final")
+    comp = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Final", default=0)
     tiponwsup = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Superior", null=True, blank=True)
     tiponwinf = models.CharField(max_length=40, choices=TIPONW, default='', verbose_name="Tipo Nonwoven Inferior", null=True, blank=True)
     estado = models.CharField(max_length=3, choices=STATUSP, default='LAB', verbose_name="Estado")
@@ -93,10 +93,10 @@ class Bobinagem(models.Model):
     comp_par = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Emenda", null=True, blank=True, default=0)
     comp_cli = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento Cliente", default=0)
     desper = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Desperdício", default=0)
-    diam = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Diametro")
+    diam = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Diametro", null=True, blank=True)
     area = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área")
-    inico = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Início")
-    fim = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Fim")
+    inico = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Início", null=True, blank=True)
+    fim = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Fim", null=True, blank=True)
     duracao = models.CharField(max_length=200, null=True, blank=True, verbose_name="Duração")
     obs = models.TextField(max_length=500, null=True, blank=True, verbose_name="Observações", default="") 
     
@@ -111,18 +111,34 @@ class Bobinagem(models.Model):
     
     class Meta:
         verbose_name_plural = "Bobinagens"
-        ordering = ['-nome']
+        ordering = ['-data', '-fim', '-nome']
 
     def get_absolute_url(self):
         return f"/producao/bobinagem/{self.id}"
 
+class Cliente(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    cod = models.PositiveIntegerField(verbose_name="Código de cliente", unique=True)
+    nome = models.CharField(max_length=200, unique=True, null=True, blank=True, verbose_name="Nome")
+    limsup = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Limite Superior")
+    liminf = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Limite Inferior")
 
+    class Meta:
+        verbose_name_plural = "Clientes"
+        ordering = ['-timestamp', '-nome']
+
+    def __str__(self):
+        return self.nome
+
+class PerfilPalete(models.Model):
+    pass
 
 
 class Palete(models.Model):
     CORE = (('3', '3'),('6', '6'))
-    STATUSP = (('G', 'G'), ('DM', 'DM'), ('R', 'R'))
+    STATUSP = (('G', 'G'), ('DM', 'DM'))
     user            = models.ForeignKey(User, on_delete=models.PROTECT,verbose_name="Username")
+    cliente         = models.ForeignKey(Cliente, on_delete=models.PROTECT,verbose_name="Cliente", null=True, blank=True)
     timestamp       = models.DateTimeField(auto_now_add=True)
     data_pal        = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today)
     nome            = models.CharField(max_length=200, unique=True, null=True, blank=True, verbose_name="Palete")
@@ -147,26 +163,30 @@ class Palete(models.Model):
         verbose_name_plural = "Paletes"
         ordering = ['-nome']  
 
-    
+
+
+
 
 class Bobine(models.Model):
-    STATUSP = (('G', 'G'), ('DM', 'DM12'), ('R', 'R'), ('BA', 'BA'),('LAB', 'LAB'))
+    STATUSP = (('G', 'G'), ('DM', 'DM12'), ('R', 'R'), ('BA', 'BA'),('LAB', 'LAB'), ('IND', 'IND'), ('HOLD', 'HOLD'))
     bobinagem = models.ForeignKey(Bobinagem, on_delete=models.CASCADE, verbose_name="Bobinagem")
     largura =  models.ForeignKey(Largura, on_delete=models.PROTECT,  null=True, blank=True, verbose_name="Largura")
     comp_actual = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Comprimento actual", default="")
     nome = models.CharField(verbose_name="Bobine", max_length=200, null=True, blank=True, default="")
     palete = models.ForeignKey(Palete, on_delete=models.SET_NULL, null=True, blank=True)   
     posicao_palete = models.PositiveIntegerField(verbose_name="Posição", default=0)
-    estado = models.CharField(max_length=3, choices=STATUSP, default='G', verbose_name="Estado")
+    estado = models.CharField(max_length=4, choices=STATUSP, default='G', verbose_name="Estado")
     area = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área bobine")
+    # area_total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área total", default=0)
     con = models.BooleanField(default=False,verbose_name="Cónica")
     descen = models.BooleanField(default=False,verbose_name="Descentrada")
     presa = models.BooleanField(default=False,verbose_name="Presa")
-    estrela = models.BooleanField(default=False,verbose_name="Estrela")
+    diam_insuf = models.BooleanField(default=False,verbose_name="Diâmetro insuficiente")
     furos = models.BooleanField(default=False,verbose_name="Furos")
-    esp = models.BooleanField(default=False,verbose_name="Espessura")
+    esp = models.BooleanField(default=False,verbose_name="Gramagem")
     troca_nw = models.BooleanField(default=False,verbose_name="Troca NW")
     outros = models.BooleanField(default=False,verbose_name="Outros")
+    buraco = models.BooleanField(default=False,verbose_name="Buracos")    
     obs = models.TextField(max_length=500, null=True, blank=True, verbose_name="Observações", default="" )
 
     def __str__(self):
@@ -215,17 +235,17 @@ class Bobine(models.Model):
         
 
 class Emenda(models.Model):
-    bobinagem = models.ForeignKey(Bobinagem, on_delete=models.PROTECT, verbose_name="Bobinagem", null=True, blank=True,)
-    bobine = models.ForeignKey(Bobine, on_delete=models.PROTECT, verbose_name="Bobine", null=True, blank=True,)
-    num_emenda = models.IntegerField(verbose_name="Emenda nº", default=0)
+    bobinagem = models.ForeignKey(Bobinagem, on_delete=models.CASCADE, verbose_name="Bobinagem", null=True, blank=True)
+    bobine = models.ForeignKey(Bobine, on_delete=models.PROTECT, verbose_name="Bobine")
+    num_emenda = models.IntegerField(verbose_name="Bobine nº",  null=True, blank=True, default=0)
     emenda = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Emenda metros", null=True, blank=True, default=0)
-    metros = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Metros gastos", null=True, blank=True, default=0)
+    metros = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Metros gastos", blank=True, default=0)
 
     def __str__(self):
         return 'Emenda nº %s da bobinagem %s' % (self.num_emenda, self.bobinagem)
 
-    def get_absolute_url(self):
-        return f"/producao/retrabalho/{self.bobinagem.id}"
+    # def get_absolute_url(self):
+    #     return f"/producao/retrabalho/{self.bobinagem.id}"
 
 class Aging(models.Model):
     pass
@@ -289,20 +309,21 @@ def create_bobine(sender, instance, **kwargs):
 
 
 def tempo_duracao(sender, instance, **kwargs):
-    if not instance.duracao:
-        fim = instance.fim
-        fim = fim.strftime('%H:%M')
-        inico = instance.inico
-        inico = inico.strftime('%H:%M')
-        (hf, mf) = fim.split(':')
-        (hi, mi) = inico.split(':')
-        if hf < hi: 
-            result = (int(hf) * 3600 + int(mf) * 60) - (int(hi) * 3600 + int(mi) * 60) + 86400
-        else:
-            result = (int(hf) * 3600 + int(mf) * 60) - (int(hi) * 3600 + int(mi) * 60) 
-        
-        result_str = strftime("%H:%M", gmtime(result))
-        instance.duracao = result_str
+    if instance.inico or instance.fim:
+        if not instance.duracao:
+            fim = instance.fim
+            fim = fim.strftime('%H:%M')
+            inico = instance.inico
+            inico = inico.strftime('%H:%M')
+            (hf, mf) = fim.split(':')
+            (hi, mi) = inico.split(':')
+            if hf < hi: 
+                result = (int(hf) * 3600 + int(mf) * 60) - (int(hi) * 3600 + int(mi) * 60) + 86400
+            else:
+                result = (int(hf) * 3600 + int(mf) * 60) - (int(hi) * 3600 + int(mi) * 60) 
+            
+            result_str = strftime("%H:%M", gmtime(result))
+            instance.duracao = result_str
 
 
 def palete_nome(sender, instance, **kwargs):
@@ -322,9 +343,9 @@ def palete_nome(sender, instance, **kwargs):
             instance.num = num + 1
             if num + 1 < 10:
                 instance.nome = 'DM000%s-%s' % (num + 1, ano)
-            elif pal + 1 < 100:
+            elif num + 1 < 100:
                 instance.nome = 'DM00%s-%s' % (num + 1, ano)
-            elif pal + 1 < 1000:
+            elif num + 1 < 1000:
                 instance.nome = 'DM0%s-%s' % (num + 1, ano)
             else:
                 instance.nome = 'DM%s-%s' % (num + 1, ano)
@@ -402,12 +423,25 @@ def desperdicio(sender, instance, **kwargs):
         instance.comp_cli = instance.comp
         instance.desper = 0
    
+      
 
-
-        
-
+def comp_area_bobine_retrabalho(sender, instance, **kwargs):
+    bobine = Bobine.objects.filter(bobinagem=instance)
+    for b in bobine:
+        b.comp_actual = instance.comp
+        b.area = b.comp_actual * b.largura.largura
+        b.save()
 
     
+# def bobine_nome(pk):
+#     bobinagem = Bobinagem.objects.get(pk=pk)
+#     bobine = Bobine.objects.filter(bobinagem=bobinagem)
+#     for b in bobine:
+#         if b.largura.num_bobine < 10:
+#             b.nome = '%s-0%s' % (bobinagem.nome, b.largura.num_bobine)
+#         else:
+#             b.nome = '%s-%s' % (bobinagem.nome, b.largura.num_bobine)
+#         b.save()
 
 
 
@@ -416,6 +450,7 @@ post_save.connect(perfil_larguras, sender=Perfil)
 pre_save.connect(bobinagem_nome, sender=Bobinagem)
 pre_save.connect(desperdicio, sender=Bobinagem)
 post_save.connect(create_bobine, sender=Bobinagem)
+post_save.connect(comp_area_bobine_retrabalho, sender=Bobinagem)
 pre_save.connect(tempo_duracao, sender=Bobinagem)
 pre_save.connect(palete_nome, sender=Palete)
 pre_save.connect(area_bobinagem, sender=Bobinagem)

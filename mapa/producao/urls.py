@@ -1,17 +1,19 @@
 from django.conf.urls import url, include
 from . import views
-from .views import retrabalho_filter, BobinagemUpdate, palete_retrabalho, retrabalho_home, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
+from .views import retrabalho_filter, planeamento_home, bobinagem_list, producao_home, cliente_home, emenda_delete, BobinagemRetrabalhoFinalizar, ClienteCreateView, finalizar_retrabalho, RetrabalhoCreateView, BobinagemUpdate, palete_retrabalho, retrabalho_home, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
 
 app_name="producao" 
 
 urlpatterns = [
     
+    url(r'^$', producao_home, name='producao_home'),
+    url(r'^planeamento/$', planeamento_home, name='planeamento_home'),
     url(r'^perfil/$', PerfilListView.as_view(), name='perfil'),
     url(r'^perfil/(?P<pk>\d+)/', perfil_detail, name='perfil_details'),
     url(r'^perfil/delete/(?P<pk>\d+)/', perfil_delete, name='perfil_delete'),
     url(r'^perfil/update/(?P<pk>\d+)/', LarguraUpdate.as_view(), name='perfil_update_largura'),
     url(r'^perfil/create/$', CreatePerfil.as_view(), name='perfil_create'),
-    url(r'^bobinagem/$', BobinagemListView.as_view(), name='bobinagens'),
+    url(r'^bobinagem/$', bobinagem_list, name='bobinagens'),
     url(r'^bobinagem/create/$', BobinagemCreateView.as_view(), name='bobinagem_create'),
     url(r'^bobinagem/(?P<pk>\d+)/', bobinagem_status, name='bobinestatus'),
     url(r'^bobinagem/update/(?P<pk>\d+)/', BobinagemUpdate.as_view(), name='bobinagemupdate'),
@@ -28,6 +30,13 @@ urlpatterns = [
     url(r'^palete/(?P<pk>\d+)/picagem/$', picagem, name='picagem'),
     url(r'^palete/(?P<operation>.+)/(?P<pk_bobine>\d+)/(?P<pk_palete>\d+)/$', palete_change, name='paletebobine'),
     url(r'^retrabalho/$', retrabalho_home, name='retrabalho_home'),
-    url(r'^retrabalho/filter/$', retrabalho_filter, name='retrabalho_filter'),
+    url(r'^retrabalho/filter/(?P<pk>\d+)/', retrabalho_filter, name='retrabalho_filter'),
+    url(r'^retrabalho/filter/delete/(?P<pk>\d+)/', emenda_delete, name='emenda_delete'),
+    url(r'^retrabalho/create/$', RetrabalhoCreateView.as_view(), name='retrabalho_bobinagem'),
+    url(r'^retrabalho/filter/finalizar/(?P<pk>\d+)/$', BobinagemRetrabalhoFinalizar.as_view(), name='finalizar_retrabalho'),
+    url(r'^clientes/$', cliente_home, name='clientes'),
+    url(r'^clientes/create/$', ClienteCreateView.as_view(), name='cliente_create'),
+    
+    
     
 ]

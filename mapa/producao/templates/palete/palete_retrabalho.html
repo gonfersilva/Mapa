@@ -1,14 +1,15 @@
 {% extends "layout.html "%} {% block title %}Paletes para retrabalho | {{ block.super }}{% endblock %} {% block content %}
 <div class="container">
-    <a href="{% url 'producao:paletes' %}" class="btn btn-primary" role="button">Voltar</a>
-    <a href="{% url 'producao:palete_create_retrabalho' %}" class="btn btn-primary pull-right" role="button">Criar palete de retrabalho</a>
+    <a href="{% url 'producao:producao_home' %}" class="btn btn-primary" role="button">Voltar</a>
+    <a href="{% url 'producao:palete_create' %}" class="btn btn-primary pull-right" role="button">Criar palete</a>
 
 
 </div>
 <div class="container table-responsive">
-    <H1>Paletes para Retrabalho</H1>
-
-    <table class="table fit">
+    <h1 id="center">Paletes para Retrabalho</h1><br>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+    <table class="table fit" id="center">
         <tr>
             <th>Palete</th>
             <th>Nº</th>
@@ -54,7 +55,8 @@
         </tr>
         {% endif %} {% endfor %}
     </table>
-
+</div>
+<div class="col-md-2"></div>
 
 
 

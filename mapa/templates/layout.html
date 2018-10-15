@@ -17,7 +17,7 @@
   <title>{% block title %}Mapa de Acompanhamento da Produção{% endblock %}</title>
 </head>
 
-<body>
+<body class="size-table">
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container" >
       <div class="navbar-header">
@@ -37,34 +37,35 @@
           
           {% else %}
           
-          <li class="dropdown">
+          <li>
             {% if user.is_staff %}
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="btn btn-secondary" href="{% url 'producao:planeamento_home' %}">
               Planeamento
             </a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href='{% url 'producao:perfil' %}'>Perfis</a>
+            {% comment %} <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'producao:perfil' %}">Perfis bobinagem</a><br>
+                <a class="dropdown-item" href="{% url 'producao:clientes' %}">Clientes</a>
               
                 
-            </div>
+            </div> {% endcomment %}
             {% endif %}
             
           </li>
-          <li class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <li>
+            <a class="btn btn-secondary" href="{% url 'producao:producao_home' %}" role="button">
               Produção
             </a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href='{% url 'producao:bobinagens' %}'>Bobinagens</a></br>
-                <a class="dropdown-item" href='{% url 'producao:paletes' %}'>Paletes</a></br>  
-               <!-- <a class="dropdown-item" href='{% url 'producao:retrabalho_home' %}'>Retrabalho</a></br> -->
+            {% comment %} <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'producao:bobinagens' %}">Bobinagens</a><br>
+                <a class="dropdown-item" href="{% url 'producao:paletes' %}">Paletes</a><br>  
+               <a class="dropdown-item" href="{% url 'producao:retrabalho_home' %}">Retrabalho</a><br>
                                         
                 
-            </div>
+            </div> {% endcomment %}
             
           </li>
           
-          <li><a href="{% url 'report:report' %}">Report</a></li>
+          {% comment %} <li><a href="{% url 'report:report' %}">Report</a></li> {% endcomment %}
           <li><a href="#">{{ user.first_name }} {{ user.last_name }}</a></li>
           
           <li><a href="{% url 'users:logout' %}">Logout</a></li>
@@ -85,7 +86,7 @@
 
     <hr>
 
-    <footer>
+    <footer id="center">
       <p>&copy; 2018 Elastictek</p>
     </footer>
 

@@ -17,7 +17,8 @@
     </div>
 <div class="container">
     <div class="row">
-            <h2>Detalhes: {{ bobinagem.nome }}</h2>
+            <h1 id="center">Detalhe da bobinagem</h1>
+            <h2 id="center">{{ bobinagem.nome }}</h2>
             <br/>
             
             <div class="container col-md-6">
@@ -32,55 +33,45 @@
                 <table>
                     <tr>
                        <th>Data:</th>
-                       <td>{{ bobinagem.data|date:"d-n-Y" }}</td>
+                       <td id="right">{{ bobinagem.data|date:"d-n-Y" }}</td>
                     </tr>
                    
                     <tr>
                         <th>Comprimento (m):</th>
-                        <td>{{ bobinagem.comp }}</td>
+                        <td id="right">{{ bobinagem.comp }}</td>
                     </tr>
                     <tr>
                         <th>Diâmetro (mm):</th>
-                        <td>{{ bobinagem.diam }}</td>
+                        <td id="right">{{ bobinagem.diam }}</td>
                     </tr>
                     <tr>
                         <th>Área (m2):</th>
-                        <td>{{ bobinagem.area }}</td>
+                        <td id="right">{{ bobinagem.area }}</td>
                     </tr>
                     <tr>
                             <th>Desperdício:</th>
-                            <td>{{ bobinagem.desper }}</td>
+                            <td id="right">{{ bobinagem.desper }}</td>
                         </tr>
                     <tr>
                         <th>Ínicio:</th>
-                        <td>{{ bobinagem.inico|date:"G:i" }}</td>
+                        <td id="right">{{ bobinagem.inico|date:"G:i" }}</td>
                     </tr>
                     <tr>
                         <th>Fim:</th>
-                        <td>{{ bobinagem.fim|date:"G:i" }}</td>
+                        <td id="right">{{ bobinagem.fim|date:"G:i" }}</td>
                     </tr>
                     <tr>
                         <th>Duração:</th>
-                        <td>{{ bobinagem.duracao }}</td>
+                        <td id="right">{{ bobinagem.duracao }}</td>
                     </tr>
                     
                          
                     
                 </table>
             </div>
+            {% if bobinagem.perfil.retrabalho == False %}
             <div class="container col-md-6">
-                    <!-- <div class="container col-md-6">
-                        <h2>Nonwoven Superior</h2>
-                        <p>{{ bobinagem.tiponwsup }}</p>
-                        <p>{{ bobinagem.lotenwsup }}</p>
-                        <p>{{ bobinagem.nwsup }}</p>
-                    </div>
-                    <div class="container col-md-6">
-                        <h2>Nonwoven Inferior</h2>
-                        <p>{{ bobinagem.tiponwinf }}</p>
-                        <p>{{ bobinagem.lotenwinf }}</p>
-                        <p>{{ bobinagem.nwinf }}</p>
-                    </div> -->
+                 
                     <table class="table table-fixed">
                         <thead>
                             <tr>
@@ -109,6 +100,7 @@
                     </table>
 
             </div>
+            {% endif%}
               
 
     </div>
@@ -126,20 +118,21 @@
     {% else %}
         <h2 id="estado_lab">{{ bobinagem.estado }}</h2>
     {% endif %} -->
-        <h3>Bobines</h3>
+        <h3 id="center">Bobines</h3><br>
       <table class="table table-fixed">
           <thead>
             <tr>
                 <th>Nome</th>
-                <th>Largura</th>
-                <th>Área</th>
+                <th id="center">Largura</th>
+                <th id="center">Área</th>
                 <th class="check">Estado</th>
                 <th class="check">Cónico</th>
                 <th class="check">Descentrado</th>
                 <th class="check">Presa</th>
-                <th class="check">Estrela</th>
+                <th class="check">Diâmetro insuficiente</th>
                 <th class="check">Furos</th>
-                <th class="check">Espessura</th>
+                <th class="check">Buracos</th>
+                <th class="check">Gramagem</th>
                 <th class="check">Troca</th>
                 <th class="check">Outros</th>
                 <th>Observações</th>
@@ -149,8 +142,8 @@
             <tbody>    
             <tr>
                 <td><a href="{% url 'producao:bobineupdate' item.pk %}">{{ item.nome }}</a></td>
-                <td>{{ item.largura.largura }}</td>
-                <td>{{ item.area }}</td>
+                <td id="center">{{ item.largura.largura }}</td>
+                <td id="center">{{ item.area }}</td>
                 {% if item.estado == "G" %}
                     <td id="estado_good">{{ item.estado }}</td>
                 {% elif item.estado == "DM"%}
@@ -161,8 +154,10 @@
                     <td id="estado_lab">{{ item.estado }}</td>
                 {% elif item.estado == "BA" %}
                     <td id="estado_ba">{{ item.estado }}</td>
-                {% else %}
+                {% elif item.estado == "IND" %}
                     <td id="estado_ind">{{ item.estado }}</td>
+                {% elif item.estado == "HOLD" %}
+                    <td id="estado_hold">{{ item.estado }}</td>
                 {% endif %}
                 {% if not item.con %}
                 <td></td>
@@ -182,13 +177,19 @@
                 <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
                 {% endif %}
 
-                {% if not item.estrela %}
+                {% if not item.diam_insuf %}
                 <td></td>
                 {% else %}
                 <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
                 {% endif %}
 
                 {% if not item.furos %}
+                <td></td>
+                {% else %}
+                <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
+                {% endif %}
+
+                {% if not item.buraco %}
                 <td></td>
                 {% else %}
                 <td class="check"><span style="color:red"><i class="glyphicon glyphicon-remove"></i></span></td>
@@ -224,7 +225,7 @@
         <p></p>
         {% else %}
         <div class="container">
-            <p>Observações:</p>
+            <h2>Observações:</h2>
             <p>{{ bobinagem.obs }}</p>
             
             
@@ -232,21 +233,21 @@
         {% endif %}
         {% if bobinagem.num_emendas > 0 %}
         <div class="container">
-                <p>Emendas</p>
+                <h3>Bobines originais</h3>
                 {% if emenda.bobinagem != "" %}
-                    <table class="table">
+                    <table class="table fit">
                         <tr>
-                            <th>Emenda nº</th>
-                            <th>Metros</th>
+                            <th></th>
                             <th>Bobine original</th>
-                            <th>Metros gastos</th>
+                            <th>Consumo (m)</th>
+                            <th>Emenda (m)</th>
                         </tr>
                         {% for em in emenda %}
                         <tr>
                             <td>{{ em.num_emenda }}</td>
-                            <td>{{ em.emenda }}</td>
                             <td>{{ em.bobine }}</td>
                             <td>{{ em.metros }}</td>
+                            <td>{{ em.emenda }}</td>
                             
                         </tr>
                         {% endfor %}
@@ -258,7 +259,7 @@
         {% else %}
         <div class="container">
             
-            <p></p>
+        
             
             
         </div>

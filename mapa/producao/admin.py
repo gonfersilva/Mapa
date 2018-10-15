@@ -1,4 +1,4 @@
-from .models import Perfil, Largura, Bobinagem, Bobine, Palete, Emenda
+from .models import Perfil, Largura, Bobinagem, Bobine, Palete, Emenda, Cliente
 from django.contrib import admin
 
 
@@ -8,3 +8,4 @@ admin.site.register(Largura)
 admin.site.register(Bobinagem)
 admin.site.register(Bobine)
 admin.site.register(Emenda)
+admin.site.register(Cliente)

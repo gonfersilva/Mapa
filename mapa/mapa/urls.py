@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^producao/', include('producao.urls', namespace='producao')),
     url(r'^report/', include('report.urls', namespace='report')),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^api/', include("producao.api.urls", namespace='api')),
 ]
 
 if local.DEBUG:

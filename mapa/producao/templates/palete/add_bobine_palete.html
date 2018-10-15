@@ -5,18 +5,19 @@
 <div class="container">
     <div class="container">
         {% if palete.estado == 'G' %}
-        <a href="{% url 'producao:paletes'   %}" class="btn btn-primary" role="button">Voltar</a>
+        <a href="{% url 'producao:paletes' %}" class="btn btn-primary" role="button">Voltar</a>
         {% elif palete.estado == 'DM' %}
-        <a href="{% url 'producao:paletes_retrabalho'   %}" class="btn btn-primary" role="button">Voltar</a>
+        <a href="{% url 'producao:paletes_retrabalho' %}" class="btn btn-primary" role="button">Voltar</a>
         {% endif %}
         {% if palete.estado == 'G'%}
-        <a href="{% url 'producao:palete_create'   %}" class="btn btn-primary" role="button">Nova Palete</a>
+        <a href="{% url 'producao:palete_create' %}" class="btn btn-primary" role="button">Nova Palete</a>
         {% endif %}
     </div>
     <div class="container">
         {% if palete.estado != 'DM'%}
         <div class="row">
             <h1>Palete: {{ palete.nome }}</h1>
+            <h2>Cliente: {{ palete.cliente.nome}}</h2>
             {% if palete.estado == 'G' %}
                 <h3 id="estado_good">Good</h3>
             {% elif palete.estado == 'R' %}
@@ -69,6 +70,14 @@
                         <input id="myInput" type="text" name="q" placeholder="Bobine" autofocus/>
                         <input id="myBtn" type="submit" class="btn btn-success"/>
                     </form>
+                    {% if messages %}
+                    <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}" id="error">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                </ul>
                     {% if palete.estado != 'DM' %}
                         {% if palete.num_bobines_act == palete.num_bobines %}
                         <div class="row">
