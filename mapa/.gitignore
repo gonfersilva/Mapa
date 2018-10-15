@@ -1,6 +1,6 @@
 *.pyc
 migrations
 db.sqlite3
-mapa/mapa/settings/production.py
-mapa/mapa/settings/local.py
-mapa/mapa/settings/base.py
+production.py
+local.py
+base.py
