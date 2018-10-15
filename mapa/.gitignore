@@ -1,4 +1,6 @@
 *.pyc
 migrations
 db.sqlite3
+production.py
+local.py
 
