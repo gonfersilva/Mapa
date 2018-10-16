@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'users',
-    'producao'
+    'producao',
+    'report',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

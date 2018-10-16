@@ -177,7 +177,7 @@ class Bobine(models.Model):
     posicao_palete = models.PositiveIntegerField(verbose_name="Posição", default=0)
     estado = models.CharField(max_length=4, choices=STATUSP, default='G', verbose_name="Estado")
     area = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área bobine")
-    # area_total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área total", default=0)
+    
     con = models.BooleanField(default=False,verbose_name="Cónica")
     descen = models.BooleanField(default=False,verbose_name="Descentrada")
     presa = models.BooleanField(default=False,verbose_name="Presa")
