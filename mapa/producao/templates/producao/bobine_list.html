@@ -122,17 +122,17 @@
       <table class="table table-fixed">
           <thead>
             <tr>
-                <th>Nome</th>
+                <th style="min-width:120px;">Nome</th>
                 <th id="center">Largura</th>
                 <th id="center">Área</th>
                 <th class="check">Estado</th>
                 <th class="check">Cónico</th>
-                <th class="check">Descentrado</th>
+                <th class="check">Desc.</th>
                 <th class="check">Presa</th>
-                <th class="check">Diâmetro insuficiente</th>
+                <th class="check">Diâm.</th>
                 <th class="check">Furos</th>
                 <th class="check">Buracos</th>
-                <th class="check">Gramagem</th>
+                <th class="check">Gram.</th>
                 <th class="check">Troca</th>
                 <th class="check">Outros</th>
                 <th>Observações</th>
@@ -214,6 +214,7 @@
                 {% endif %}
           
                 <td>{{ item.obs }}</td>
+                <td><a href="{% url 'producao:bobineupdate' item.pk %}" class="btn btn-primary" role="button">Class.</a></td>
                           
             </tr>
         </tbody>  

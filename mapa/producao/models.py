@@ -163,10 +163,6 @@ class Palete(models.Model):
         verbose_name_plural = "Paletes"
         ordering = ['-nome']  
 
-
-
-
-
 class Bobine(models.Model):
     STATUSP = (('G', 'G'), ('DM', 'DM12'), ('R', 'R'), ('BA', 'BA'),('LAB', 'LAB'), ('IND', 'IND'), ('HOLD', 'HOLD'))
     bobinagem = models.ForeignKey(Bobinagem, on_delete=models.CASCADE, verbose_name="Bobinagem")
@@ -196,8 +192,7 @@ class Bobine(models.Model):
     
     class Meta:
         verbose_name_plural = "Bobines"
-        
-    
+         
     def get_absolute_url(self):
         return f"/producao/bobinagem/{self.bobinagem.id}"
 
@@ -249,9 +244,6 @@ class Emenda(models.Model):
 class Aging(models.Model):
     pass
     
-            
-
-
 
 def bobinagem_nome(sender, instance, **kwargs):
     if not instance.nome:

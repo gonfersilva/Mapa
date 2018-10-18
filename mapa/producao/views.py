@@ -254,7 +254,7 @@ def picagem(request, pk):
                 # return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
                 return redirect('producao:addbobinepalete', pk=palete.pk)
         else:
-            if bobine.estado == 'G' or bobine.estado == 'LAB' :
+            if bobine.estado == 'G' or bobine.estado == 'LAB':
                 if palete.num_bobines_act == palete.num_bobines:
                     messages.error(request, 'A palete já se encontra completa.')
                     #  erro = 3
@@ -269,7 +269,7 @@ def picagem(request, pk):
                         #  erro = 1
                         #  return redirect('producao:addbobinepaleteerro', pk=palete.pk, e=erro)
                          return redirect('producao:addbobinepalete', pk=palete.pk)
-            elif bobine.estado == 'DM' and bobine.largura.largura == palete.largura_bobines:
+            elif bobine.estado == 'DM' and bobine.largura.largura == palete.largura_bobines and palete.estado == 'DM':
                   Bobine.add_bobine(palete.pk, bobine.pk)
                   return redirect('producao:addbobinepalete', pk=palete.pk) 
             else:
@@ -656,3 +656,13 @@ def planeamento_home(request):
     context = {}
 
     return render(request, template_name, context)
+
+
+def bobine_details(request, pk):
+     bobine = get_object_or_404(Bobine, pk=pk)
+
+     template_name = 'producao/bobine_details.html'
+     context = {
+         "bobine": bobine,
+     }
+     return render(request, template_name, context)

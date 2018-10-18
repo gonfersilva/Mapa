@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from . import views
-from .views import retrabalho_filter, planeamento_home, bobinagem_list, producao_home, cliente_home, emenda_delete, BobinagemRetrabalhoFinalizar, ClienteCreateView, finalizar_retrabalho, RetrabalhoCreateView, BobinagemUpdate, palete_retrabalho, retrabalho_home, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
+from .views import bobine_details, retrabalho_filter, planeamento_home, bobinagem_list, producao_home, cliente_home, emenda_delete, BobinagemRetrabalhoFinalizar, ClienteCreateView, finalizar_retrabalho, RetrabalhoCreateView, BobinagemUpdate, palete_retrabalho, retrabalho_home, palete_create_retrabalho, picagem, add_bobine_palete_erro, palete_delete, bobinagem_delete, perfil_delete, CreatePerfil, PerfilListView, perfil_detail, LarguraUpdate, BobinagemListView, BobinagemCreateView, bobinagem_status, add_bobine_palete, BobineUpdate, palete_change, PaleteListView, PaleteCreateView, status_bobinagem
 
 app_name="producao" 
 
@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^bobinagem/delete/(?P<pk>\d+)/', bobinagem_delete, name='bobinagem_delete'),
     url(r'^bobinagem/(?P<operation>.+)/(?P<pk>\d+)/', status_bobinagem, name='bobinagem_status'),
     url(r'^bobine/(?P<pk>\d+)/', BobineUpdate.as_view(), name='bobineupdate'),
+    url(r'^bobine/details/(?P<pk>\d+)/', bobine_details, name='bobine_details'),
     url(r'^palete/$', PaleteListView.as_view(), name='paletes'),
     url(r'^palete/retrabalho/$', palete_retrabalho, name='paletes_retrabalho'),
     url(r'^palete/create/$', PaleteCreateView.as_view(), name='palete_create'),
@@ -36,7 +37,7 @@ urlpatterns = [
     url(r'^retrabalho/filter/finalizar/(?P<pk>\d+)/$', BobinagemRetrabalhoFinalizar.as_view(), name='finalizar_retrabalho'),
     url(r'^clientes/$', cliente_home, name='clientes'),
     url(r'^clientes/create/$', ClienteCreateView.as_view(), name='cliente_create'),
-    
+       
     
     
 ]
