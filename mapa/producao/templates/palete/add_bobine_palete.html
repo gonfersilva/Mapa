@@ -116,7 +116,7 @@
                                 
                                 <tr>
                                     <td>{{ bob.posicao_palete }}</td>
-                                    <td><a href="{% url 'producao:bobineupdate' bob.pk %}">{{ bob.nome }} </a></td>
+                                    <td><a href="{{ bob.get_absolute_url }}">{{ bob.nome }} </a></td>
                                     {% if bob.estado == "G" %}
                                     <td id="estado_good">{{ bob.estado }}</td>
                                     {% elif bob.estado == "DM"%}

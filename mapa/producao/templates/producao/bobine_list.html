@@ -141,7 +141,7 @@
             {% for item in bobine %}
             <tbody>    
             <tr>
-                <td><a href="{% url 'producao:bobineupdate' item.pk %}">{{ item.nome }}</a></td>
+                <td><a href="{{ item.get_absolute_url }}">{{ item.nome }}</a></td>
                 <td id="center">{{ item.largura.largura }}</td>
                 <td id="center">{{ item.area }}</td>
                 {% if item.estado == "G" %}
@@ -246,7 +246,7 @@
                         {% for em in emenda %}
                         <tr>
                             <td>{{ em.num_emenda }}</td>
-                            <td>{{ em.bobine }}</td>
+                            <td><a href="{% url 'producao:bobine_details' em.bobine.pk %}">{{ em.bobine }}</a></td>
                             <td>{{ em.metros }}</td>
                             <td>{{ em.emenda }}</td>
                             

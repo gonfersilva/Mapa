@@ -13,6 +13,8 @@ from django.http import JsonResponse, Http404, HttpResponse
 from django.db.models.signals import pre_save, post_save
 from django.contrib import messages
 from time import gmtime, strftime
+import datetime
+from .funcs import *
 
 
 @login_required
@@ -111,6 +113,13 @@ class BobineUpdate(LoginRequiredMixin, UpdateView):
     model = Bobine
     fields = [ 'estado', 'con', 'descen', 'presa', 'diam_insuf', 'furos', 'esp', 'troca_nw', 'outros', 'buraco', 'obs']
     template_name = 'producao/bobine_update.html'
+    
+    def get_success_url(self):
+         bobinagem = self.object.bobinagem
+         return reverse('producao:bobinestatus', kwargs={'pk': bobinagem.id})
+
+    
+     
 
 class BobinagemUpdate(LoginRequiredMixin, UpdateView):
     model = Bobinagem
@@ -371,6 +380,7 @@ def status_bobinagem(request, operation, pk):
                 bobine.estado = 'G'
                 bobine.save()
             num += 1
+        areas(pk)
     elif operation == 'rej':
         bobinagem.estado = 'R'
         bobinagem.save()
@@ -382,6 +392,7 @@ def status_bobinagem(request, operation, pk):
                 bobine.estado = 'R'
                 bobine.save()
             num += 1
+        areas(pk)
     elif operation == 'dm':
         bobinagem.estado = 'DM'
         bobinagem.save()
@@ -393,8 +404,9 @@ def status_bobinagem(request, operation, pk):
                 bobine.estado = 'DM'
                 bobine.save()
             num += 1
-     
-    
+        areas(pk)
+
+       
             
     return redirect('producao:bobinagens')
 
@@ -660,9 +672,61 @@ def planeamento_home(request):
 
 def bobine_details(request, pk):
      bobine = get_object_or_404(Bobine, pk=pk)
+     
+     emenda = Emenda.objects.filter(bobinagem=bobine.bobinagem)
 
      template_name = 'producao/bobine_details.html'
      context = {
          "bobine": bobine,
+         "emenda": emenda,
      }
      return render(request, template_name, context)
+
+
+def relatorio_diario(request):
+    inicio_data = request.GET.get("id")
+    fim_data = request.GET.get("fd")
+    inicio_hora = request.GET.get("fd")
+    fim_hora = request.GET.get("fd")
+    
+    bobinagem = []
+
+    area_g = 0
+    area_r = 0
+    area_dm = 0
+    area_ind = 0
+    area_ba = 0
+
+   
+
+    
+    
+   
+    if inicio_data and fim_data:
+         bobinagem = Bobinagem.objects.filter(data__range=(inicio_data, fim_data))
+         for bob in bobinagem:
+             area_g += bob.area_g
+             area_r += bob.area_r
+             area_dm += bob.area_dm
+             area_ind += bob.area_ind
+             area_ba += bob.area_ba
+
+    
+        
+
+   
+
+    template_name = 'producao/relatorio_diario_linha.html'
+    context = {     
+        "bobinagem": bobinagem,
+        "area_g":area_g,
+        "area_dm":area_dm,
+        "area_r":area_r,
+        "area_ba":area_ba,
+        "area_ind":area_ind,
+        
+
+        
+    }
+
+    return render(request, template_name, context)

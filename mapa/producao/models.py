@@ -99,6 +99,11 @@ class Bobinagem(models.Model):
     fim = models.TimeField(auto_now_add=False, auto_now=False, verbose_name="Fim", null=True, blank=True)
     duracao = models.CharField(max_length=200, null=True, blank=True, verbose_name="Duração")
     obs = models.TextField(max_length=500, null=True, blank=True, verbose_name="Observações", default="") 
+    area_g = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área Good", default=0)
+    area_dm = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área DM", default=0)
+    area_r = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área R", default=0)
+    area_ind = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área Ind", default=0)
+    area_ba = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Área BA", default=0)
     
 
     def __str__(self):
@@ -194,7 +199,7 @@ class Bobine(models.Model):
         verbose_name_plural = "Bobines"
          
     def get_absolute_url(self):
-        return f"/producao/bobinagem/{self.bobinagem.id}"
+        return f"/producao/bobine/details/{self.id}"
 
     @classmethod
     def add_bobine(cls, palete, bobine):
@@ -226,7 +231,8 @@ class Bobine(models.Model):
         bobine_filter = Bobine.objects.filter(palete=palete)
         bobine.save()
         palete.save()
-        
+
+       
 
 class Emenda(models.Model):
     bobinagem = models.ForeignKey(Bobinagem, on_delete=models.CASCADE, verbose_name="Bobinagem", null=True, blank=True)
@@ -296,6 +302,10 @@ def create_bobine(sender, instance, **kwargs):
                 bob.estado = 'LAB'
             bob.save() 
         num += 1
+    
+    
+
+
 
 
 
@@ -363,7 +373,7 @@ def palete_nome(sender, instance, **kwargs):
 def area_bobinagem(sender, instance, **kwargs):
     largura = instance.perfil.largura_bobinagem / 1000
     instance.area = instance.comp_cli * largura
-
+    
 def area_bobine(sender, instance, **kwargs):
     largura = instance.largura.largura / 1000
     instance.area = largura * instance.comp_actual
@@ -434,6 +444,88 @@ def comp_area_bobine_retrabalho(sender, instance, **kwargs):
 #             b.nome = '%s-%s' % (bobinagem.nome, b.largura.num_bobine)
 #         b.save()
 
+# def area_status(sender, instance, **kwargs):
+#     bobine = Bobine.objects.filter(bobinagem=instance)
+#     area_g = 0
+#     area_dm = 0
+#     area_r = 0
+#     area_ind = 0
+#     area_ba = 0
+#     for b in bobine:
+#         if b.estado == 'G':
+#             area_g += b.area
+#         elif b.estado == 'DM':
+#             area_dm += b.area
+#         elif b.estado == 'R':
+#             area_r += b.area
+#         elif b.estado == 'IND':
+#             area_ind += b.area
+#         elif b.estado == 'BA':
+#             area_ba += b.area
+#         else: 
+#             instance.area_g = area_g
+#             instance.area_dm= area_dm
+#             instance.area_r = area_r
+#             instance.area_ind = area_ind
+#             instance.area_ba = area_ba
+#             instance.save()
+            
+
+#     instance.area_g = area_g
+#     instance.area_dm= area_dm
+#     instance.area_r = area_r
+#     instance.area_ind = area_ind
+#     instance.area_ba = area_ba
+#     instance.save()
+
+
+# def area_good(pk):
+#     bobinagem = Bobinagem.objects.get(pk=pk)
+#     bobine_g = Bobine.objects.filter(bobinagem=bobinagem, estado='G')
+#     area_g = 0
+#     for b_g in bobine_g:
+#         area_g = b_g.area
+    
+#     bobinagem.area_g = area_g
+#     bobinagem.save()
+
+def update_areas(sender, instance, **kwargs):
+    post_save.disconnect(update_areas, sender=sender)
+    bobine = Bobine.objects.get(pk=instance.pk)
+    bobinagem = Bobinagem.objects.get(pk=bobine.bobinagem.pk)
+    bobines = Bobine.objects.filter(bobinagem=bobinagem)
+    area_g = 0
+    area_dm = 0
+    area_r = 0
+    area_ind = 0
+    area_ba = 0
+    
+    for b in bobines:
+         estado = b.estado
+
+         if estado == 'G':
+             area_g += b.area
+        
+         elif estado == 'R':
+            area_r += b.area
+        
+         elif estado == 'DM':
+             area_dm += b.area
+
+         elif estado == 'IND':
+             area_ind += b.area
+
+         elif estado == 'BA':
+             area_ba += b.area
+    
+    bobinagem.area_g = area_g
+    bobinagem.area_r = area_r
+    bobinagem.area_dm = area_dm
+    bobinagem.area_ind = area_ind
+    bobinagem.area_ba = area_ba
+    bobinagem.save()
+
+    post_save.connect(update_areas, sender=sender)
 
 
 
@@ -442,12 +534,14 @@ pre_save.connect(bobinagem_nome, sender=Bobinagem)
 pre_save.connect(desperdicio, sender=Bobinagem)
 post_save.connect(create_bobine, sender=Bobinagem)
 post_save.connect(comp_area_bobine_retrabalho, sender=Bobinagem)
+# post_save.connect(area_status, sender=Bobinagem)
 pre_save.connect(tempo_duracao, sender=Bobinagem)
 pre_save.connect(palete_nome, sender=Palete)
 pre_save.connect(area_bobinagem, sender=Bobinagem)
 pre_save.connect(comp_bobine, sender=Bobine)
 pre_save.connect(area_bobine, sender=Bobine)
 pre_save.connect(area_palete, sender=Palete)
+post_save.connect(update_areas, sender=Bobine)
 
 
 
