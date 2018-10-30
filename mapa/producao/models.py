@@ -27,7 +27,7 @@ class Perfil(models.Model):
     densidade_mp = models.DecimalField(verbose_name="Densidade da matéria prima", max_digits=10, decimal_places=2, null=True, blank=True)
     velocidade = models.DecimalField(verbose_name="Velocidade", max_digits=10, decimal_places=2, null=True, blank=True)
     producao = models.DecimalField(verbose_name="Produção", max_digits=10, decimal_places=2, null=True, blank=True)
-    teste = models.DecimalField(verbose_name="Produção", max_digits=10, decimal_places=2, null=True, blank=True)
+    
 
     class Meta:
         verbose_name_plural = "Perfis"
